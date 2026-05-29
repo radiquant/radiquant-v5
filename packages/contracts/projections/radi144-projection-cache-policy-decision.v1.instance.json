@@ -1,0 +1,31 @@
+{
+  "schema_id": "radi144_projection_cache_policy_decision_v1",
+  "decision": "record_no_cache_policy_until_storage_contract",
+  "status": "projection_cache_policy_recorded_cache_disabled",
+  "projection_cache_policy_recorded": true,
+  "projection_cache_enabled": false,
+  "projection_cache_storage_enabled": false,
+  "projection_cache_write_service_enabled": false,
+  "api_projection_reads_enabled": true,
+  "source_of_truth": "module_results.result_payload_json",
+  "cache_mode": "no_cache_on_demand_projection_only",
+  "invalidation_required_before_storage": true,
+  "required_future_gate": "radi144_materialized_projection_storage_contract_gate_decision",
+  "required_invalidation_triggers": [
+    "result_payload_rewritten",
+    "retention_deleted",
+    "consent_revoked",
+    "role_policy_changed",
+    "projection_builder_version_changed"
+  ],
+  "required_invariants": [
+    "cache_storage_disabled",
+    "cache_write_service_disabled",
+    "api_read_projection_remains_on_demand",
+    "stored_result_payload_remains_source_of_truth",
+    "tenant_role_checks_required_before_future_cache",
+    "invalidation_triggers_required_before_future_cache",
+    "no_raw_debug_projection_cache",
+    "no_new_runtime_route"
+  ]
+}

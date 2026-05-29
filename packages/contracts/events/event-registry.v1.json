@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "status": "realtime_api_gate_initialized",
+  "source": "/opt/radiquant4/docs/pi/realtime.yml",
+  "envelope_schema": "packages/contracts/events/event-envelope.schema.v1.json",
+  "runtime_scope": {
+    "event_schema_enabled": true,
+    "event_log_enabled": true,
+    "realtime_api_enabled": true,
+    "sse_enabled": true,
+    "fallback_polling_enabled": true,
+    "replay_api_enabled": true,
+    "job_tracker_enabled": false
+  },
+  "required_payload_fields": ["event_id", "event_type", "occurred_at", "tenant_id", "correlation_id"],
+  "families": [
+    {
+      "id": "workflow",
+      "events": ["workflow.created", "workflow.started", "workflow.phase.changed", "workflow.completed", "workflow.failed"]
+    },
+    {
+      "id": "step",
+      "events": ["step.queued", "step.started", "step.progress", "step.completed", "step.failed"]
+    },
+    {
+      "id": "substep",
+      "events": ["substep.started", "substep.progress", "substep.output.ready", "substep.completed", "substep.failed"]
+    },
+    {
+      "id": "module",
+      "events": ["module.radi144.started", "module.radi144.completed", "module.radi144.failed"]
+    },
+    {
+      "id": "hardware",
+      "events": ["hardware.check.started", "hardware.ack", "hardware.fallback", "hardware.disconnected"]
+    },
+    {
+      "id": "safety",
+      "events": ["safety.consent.required", "safety.approval.required", "safety.limit.applied"]
+    },
+    {
+      "id": "job",
+      "events": ["job.queued", "job.running", "job.paused", "job.resumed", "job.cancelled", "job.done", "job.failed"]
+    },
+    {
+      "id": "report",
+      "events": ["report.generating", "report.ready", "report.failed"]
+    }
+  ],
+  "connection_states": ["connected", "reconnecting", "fallback", "offline", "failed", "auth_error"],
+  "job_states": ["queued", "running", "waiting_for_hardware", "paused", "reconnecting", "fallback_polling", "completed", "failed", "cancelled"],
+  "payload_rules": {
+    "additional_payload_allowed": true,
+    "forbidden_payload_keys": ["raw_debug", "debug_json", "internal_state", "secret", "token", "access_token", "password"],
+    "workflow_events_require_session_id": true,
+    "step_events_require_workflow_run_id": true,
+    "substep_events_require_workflow_step_run_id": true
+  },
+  "security": {
+    "token_in_url_allowed": false,
+    "tenant_session_filter_server_side": true,
+    "replay_cursor_validated": true,
+    "event_payload_schema_validated": true
+  }
+}

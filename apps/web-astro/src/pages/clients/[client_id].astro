@@ -1,0 +1,10 @@
+---
+import { ClientDetailIsland } from '../../components/ClientDetailIsland';
+import AppShell from '../../layouts/AppShell.astro';
+
+const { client_id } = Astro.params;
+---
+
+<AppShell title="Klientendetail" description="Contract-bound Klientendetail in Radiquant v5">
+  <ClientDetailIsland client:load clientId={client_id ?? ''} />
+</AppShell>

@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "status": "planning_contract",
+  "source": "/opt/radiquant4/docs/pi/data-model.yml",
+  "mvp_entity_scope": "human_client",
+  "domains": [
+    {
+      "id": "identity",
+      "entities": ["User", "Tenant", "Role", "Permission", "MFA", "LoginSession", "Invite"],
+      "mvp_required": ["User", "Tenant", "Role"]
+    },
+    {
+      "id": "client",
+      "entities": ["ClientProfile", "ClientConsent", "ClientImage", "ClientDocument", "ClientNote"],
+      "mvp_required": ["ClientProfile", "ClientConsent"]
+    },
+    {
+      "id": "session",
+      "entities": ["Session", "SessionGoal", "WorkflowRun", "WorkflowStepRun", "WorkflowSubstepRun"],
+      "mvp_required": ["Session", "SessionGoal", "WorkflowRun", "WorkflowStepRun"]
+    },
+    {
+      "id": "engine",
+      "entities": ["ModuleRun", "ModuleResult", "ModuleInput", "ModuleOutput", "ModuleProvenance"],
+      "mvp_required": ["ModuleRun", "ModuleResult", "ModuleProvenance"]
+    },
+    {
+      "id": "compliance",
+      "entities": ["AuditLog", "ConsentEvent", "DataExport", "DeletionRequest", "RetentionPolicy"],
+      "mvp_required": ["AuditLog", "ConsentEvent"]
+    },
+    {
+      "id": "realtime",
+      "entities": ["Event", "ReplayCursor", "JobStatus", "ConnectionMetric"],
+      "mvp_required": ["Event", "JobStatus"]
+    },
+    {
+      "id": "operations",
+      "entities": ["HealthSnapshot", "QueueMetric", "WorkerStatus", "DeviceStatus", "GPULease"],
+      "mvp_required": ["HealthSnapshot"]
+    }
+  ],
+  "rules": {
+    "all_client_data_tenant_scoped": true,
+    "consent_required_for_analysis": true,
+    "retention_metadata_required_for_sensitive_data": true,
+    "encryption_required_for_sensitive_blobs": true,
+    "audit_required_for_sensitive_access": true,
+    "client_projection_must_exclude_raw_debug": true
+  }
+}

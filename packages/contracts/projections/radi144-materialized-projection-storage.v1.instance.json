@@ -1,0 +1,26 @@
+{
+  "schema_id": "radi144_materialized_projection_storage_v1",
+  "tenant_id": "00000000-0000-0000-0000-000000000001",
+  "module_run_id": "00000000-0000-0000-0000-000000000002",
+  "module_result_id": "00000000-0000-0000-0000-000000000003",
+  "role": "client",
+  "projection_schema_id": "radi144_client_projection_v1",
+  "projection_builder_version": "projection-builder-v1",
+  "source_result_hash": "sha256:example-source-result-hash",
+  "retention": {
+    "delete_after": "P90D",
+    "legal_basis": "analysis_consent",
+    "raw_debug_allowed": false
+  },
+  "projection_payload": {
+    "role": "client",
+    "module_id": "radi144",
+    "raw_debug_excluded": true,
+    "projection": "calm_summary",
+    "summary_label": "Wellbeing-orientierte Zusammenfassung"
+  },
+  "invalidated_at": null,
+  "storage_implementation_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false
+}

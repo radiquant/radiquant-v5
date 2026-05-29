@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-storage-contract-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Storage Contract Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "storage_contract_recorded",
+    "materialized_projection_storage_enabled",
+    "projection_storage_tables_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "api_projection_reads_enabled",
+    "planned_storage_entity",
+    "source_of_truth",
+    "allowed_roles",
+    "required_future_gate",
+    "required_contract_fields",
+    "forbidden_contract_fields",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_storage_contract_decision_v1" },
+    "decision": { "type": "string", "const": "record_storage_contract_without_storage_implementation" },
+    "status": { "type": "string", "const": "storage_contract_recorded_storage_disabled" },
+    "storage_contract_recorded": { "type": "boolean", "const": true },
+    "materialized_projection_storage_enabled": { "type": "boolean", "const": false },
+    "projection_storage_tables_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "api_projection_reads_enabled": { "type": "boolean", "const": true },
+    "planned_storage_entity": { "type": "string", "const": "module_projections" },
+    "source_of_truth": { "type": "string", "const": "module_results.result_payload_json" },
+    "allowed_roles": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["client", "therapist"] },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_storage_schema_gate_decision" },
+    "required_contract_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 8,
+      "uniqueItems": true
+    },
+    "forbidden_contract_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 5,
+      "uniqueItems": true
+    },
+    "required_invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 8,
+      "uniqueItems": true
+    }
+  }
+}

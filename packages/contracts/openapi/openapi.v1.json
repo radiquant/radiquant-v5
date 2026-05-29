@@ -1,0 +1,427 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "radiquant-v5 API",
+    "version": "0.0.0",
+    "description": "Contract-first API for security core, frontend shell, and tenant-scoped client domain gate."
+  },
+  "servers": [
+    { "url": "http://127.0.0.1:8050", "description": "Local API" }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Minimal public health check",
+        "tags": ["system"],
+        "responses": { "200": { "description": "Service health status", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HealthResponse" } } } } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "Tenant-scoped identity login",
+        "tags": ["identity"],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } } },
+        "responses": {
+          "200": { "description": "Bearer token for an authenticated tenant-scoped user.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TokenResponse" } } } },
+          "401": { "description": "Invalid credentials." },
+          "422": { "description": "Validation error." }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "logout",
+        "summary": "Authenticated identity logout audit event",
+        "tags": ["identity"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Logout acknowledged.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LogoutResponse" } } } },
+          "401": { "description": "Authentication required." }
+        }
+      }
+    },
+    "/clients": {
+      "post": {
+        "operationId": "createClientProfile",
+        "summary": "Create tenant-scoped client profile",
+        "tags": ["clients"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientProfileCreate" } } } },
+        "responses": {
+          "201": { "description": "Client profile created.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientProfileResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "422": { "description": "Validation error." }
+        }
+      },
+      "get": {
+        "operationId": "listClientProfiles",
+        "summary": "List tenant-scoped client profiles",
+        "tags": ["clients"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } },
+          { "name": "offset", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 0, "default": 0 } },
+          { "name": "status", "in": "query", "required": false, "schema": { "$ref": "#/components/schemas/ClientStatus" } }
+        ],
+        "responses": {
+          "200": { "description": "Tenant client profiles.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientProfileListResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." }
+        }
+      }
+    },
+    "/clients/{client_id}": {
+      "get": {
+        "operationId": "getClientProfile",
+        "summary": "Get tenant-scoped client profile",
+        "tags": ["clients"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "client_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": {
+          "200": { "description": "Client profile.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientProfileResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Client not found." }
+        }
+      },
+      "patch": {
+        "operationId": "updateClientProfile",
+        "summary": "Update tenant-scoped client profile",
+        "tags": ["clients"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "client_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientProfileUpdate" } } } },
+        "responses": {
+          "200": { "description": "Updated client profile.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientProfileResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Client not found." },
+          "422": { "description": "Validation error." }
+        }
+      }
+    },
+    "/clients/{client_id}/consents": {
+      "post": {
+        "operationId": "recordClientConsent",
+        "summary": "Record tenant-scoped client consent",
+        "tags": ["clients"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "client_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientConsentCreate" } } } },
+        "responses": {
+          "201": { "description": "Consent recorded.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientConsentResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Client not found." },
+          "422": { "description": "Validation error." }
+        }
+      },
+      "get": {
+        "operationId": "listClientConsents",
+        "summary": "List tenant-scoped client consents",
+        "tags": ["clients"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "client_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": {
+          "200": { "description": "Consent records.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientConsentListResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Client not found." }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "operationId": "createSession",
+        "summary": "Start tenant-scoped client session after active analysis consent",
+        "tags": ["sessions"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionCreateRequest" } } } },
+        "responses": {
+          "201": { "description": "Session started.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied or consent required." },
+          "404": { "description": "Client not found." },
+          "422": { "description": "Validation error." }
+        }
+      },
+      "get": {
+        "operationId": "listSessions",
+        "summary": "List tenant-scoped sessions",
+        "tags": ["sessions"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "client_id", "in": "query", "required": false, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "status", "in": "query", "required": false, "schema": { "$ref": "#/components/schemas/SessionStatus" } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } },
+          { "name": "offset", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 0, "default": 0 } }
+        ],
+        "responses": {
+          "200": { "description": "Tenant sessions.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionListResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." }
+        }
+      }
+    },
+    "/sessions/{session_id}": {
+      "get": {
+        "operationId": "getSession",
+        "summary": "Get tenant-scoped session",
+        "tags": ["sessions"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "session_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": {
+          "200": { "description": "Session.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Session not found." }
+        }
+      }
+    },
+    "/sessions/{session_id}/status": {
+      "patch": {
+        "operationId": "updateSessionStatus",
+        "summary": "Update tenant-scoped session status",
+        "tags": ["sessions"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "session_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionStatusUpdateRequest" } } } },
+        "responses": {
+          "200": { "description": "Updated session.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Session not found." },
+          "409": { "description": "Session is not active." },
+          "422": { "description": "Validation error." }
+        }
+      }
+    },
+    "/sessions/{session_id}/workflow-runs": {
+      "post": {
+        "operationId": "createWorkflowRun",
+        "summary": "Create a manifest-derived workflow plan for an active session",
+        "tags": ["workflows"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "session_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WorkflowRunCreateRequest" } } } },
+        "responses": {
+          "201": { "description": "Workflow plan created.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WorkflowRunResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied or consent required." },
+          "404": { "description": "Session or workflow not found." },
+          "409": { "description": "Session is not active or workflow requires a later gate." },
+          "422": { "description": "Validation error." }
+        }
+      },
+      "get": {
+        "operationId": "listSessionWorkflowRuns",
+        "summary": "List tenant-scoped workflow plans for a session",
+        "tags": ["workflows"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "session_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } },
+          { "name": "offset", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 0, "default": 0 } }
+        ],
+        "responses": {
+          "200": { "description": "Tenant workflow plans.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WorkflowRunListResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Session not found." }
+        }
+      }
+    },
+    "/sessions/{session_id}/events": {
+      "get": {
+        "operationId": "listSessionEvents",
+        "summary": "Replay tenant-scoped session events with validated cursor fallback",
+        "tags": ["realtime"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "session_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "after_event_id", "in": "query", "required": false, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } }
+        ],
+        "responses": {
+          "200": { "description": "Tenant session events for fallback polling.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EventReplayResponse" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Session not found." },
+          "422": { "description": "Invalid replay cursor or validation error." }
+        }
+      }
+    },
+    "/sessions/{session_id}/events/stream": {
+      "get": {
+        "operationId": "streamSessionEvents",
+        "summary": "Finite SSE replay batch for tenant-scoped session events",
+        "tags": ["realtime"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "session_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "after_event_id", "in": "query", "required": false, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } }
+        ],
+        "responses": {
+          "200": { "description": "SSE replay batch.", "content": { "text/event-stream": { "schema": { "type": "string" } } } },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "404": { "description": "Session not found." },
+          "422": { "description": "Invalid replay cursor or validation error." }
+        }
+      }
+    },
+    "/engines/radi144/jobs": {
+      "post": {
+        "operationId": "createRadi144JobRecord",
+        "summary": "Create a queued Radi144 job record without worker execution",
+        "tags": ["radi144"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Radi144 job record queued without worker execution." },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "422": { "description": "Validation error." }
+        }
+      }
+    },
+    "/engines/radi144/jobs/{job_id}": {
+      "get": {
+        "operationId": "getRadi144JobBoundaryStatus",
+        "summary": "Get Radi144 job record status without worker execution",
+        "tags": ["radi144"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "job_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": {
+          "200": { "description": "Radi144 job record status without worker execution." },
+          "404": { "description": "Radi144 job record not found." },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "422": { "description": "Validation error." }
+        }
+      }
+    },
+    "/engines/radi144/jobs/{job_id}/result": {
+      "get": {
+        "operationId": "getRadi144ProjectedResult",
+        "summary": "Read a stored Radi144 result through role-safe projection",
+        "tags": ["radi144"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "job_id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "role", "in": "query", "required": false, "schema": { "type": "string", "enum": ["client", "therapist"], "default": "client" } }
+        ],
+        "responses": {
+          "200": { "description": "Role-safe Radi144 projection without raw/debug/internal data." },
+          "401": { "description": "Authentication required." },
+          "403": { "description": "Tenant context denied." },
+          "422": { "description": "Validation error." }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } },
+    "schemas": {
+      "HealthResponse": {
+        "type": "object", "additionalProperties": false, "required": ["status", "service", "version"],
+        "properties": { "status": { "type": "string", "enum": ["ok", "degraded", "fail"] }, "service": { "type": "string", "const": "radiquant-v5-api" }, "version": { "type": "string" } }
+      },
+      "LoginRequest": {
+        "type": "object", "additionalProperties": false, "required": ["tenant_slug", "email", "password"],
+        "properties": { "tenant_slug": { "type": "string", "minLength": 3, "maxLength": 80 }, "email": { "type": "string", "format": "email" }, "password": { "type": "string", "minLength": 8, "maxLength": 256 } }
+      },
+      "TokenResponse": {
+        "type": "object", "additionalProperties": false, "required": ["access_token", "token_type", "tenant_id", "user_id", "role"],
+        "properties": { "access_token": { "type": "string" }, "token_type": { "type": "string", "const": "bearer" }, "tenant_id": { "type": "string", "format": "uuid" }, "user_id": { "type": "string", "format": "uuid" }, "role": { "$ref": "#/components/schemas/RoleName" } }
+      },
+      "LogoutResponse": { "type": "object", "additionalProperties": false, "required": ["status"], "properties": { "status": { "type": "string", "const": "ok" } } },
+      "RoleName": { "type": "string", "enum": ["admin", "therapist", "assistant", "client", "researcher", "system"] },
+      "ClientStatus": { "type": "string", "enum": ["active", "archived"] },
+      "ConsentPurpose": { "type": "string", "enum": ["analysis", "harmonization", "trend_analysis", "report_export", "replay_research_use", "hrv_processing", "media_upload_processing"] },
+      "ConsentStatus": { "type": "string", "enum": ["granted", "revoked"] },
+      "ClientProfileCreate": {
+        "type": "object", "additionalProperties": false, "required": ["display_name"],
+        "properties": { "display_name": { "type": "string", "minLength": 1, "maxLength": 200 }, "client_code": { "type": ["string", "null"], "minLength": 1, "maxLength": 80 } }
+      },
+      "ClientProfileUpdate": {
+        "type": "object", "additionalProperties": false,
+        "properties": { "display_name": { "type": ["string", "null"], "minLength": 1, "maxLength": 200 }, "client_code": { "type": ["string", "null"], "minLength": 1, "maxLength": 80 }, "status": { "anyOf": [{ "$ref": "#/components/schemas/ClientStatus" }, { "type": "null" }] } }
+      },
+      "ClientProfileResponse": {
+        "type": "object", "additionalProperties": false, "required": ["id", "tenant_id", "display_name", "client_code", "status", "created_at", "updated_at"],
+        "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "display_name": { "type": "string" }, "client_code": { "type": ["string", "null"] }, "status": { "$ref": "#/components/schemas/ClientStatus" }, "created_at": { "type": "string", "format": "date-time" }, "updated_at": { "type": "string", "format": "date-time" } }
+      },
+      "ClientProfileListResponse": {
+        "type": "object", "additionalProperties": false, "required": ["items", "limit", "offset"],
+        "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/ClientProfileResponse" } }, "limit": { "type": "integer" }, "offset": { "type": "integer" } }
+      },
+      "ClientConsentCreate": {
+        "type": "object", "additionalProperties": false, "required": ["purpose", "consent_text_version"],
+        "properties": { "purpose": { "$ref": "#/components/schemas/ConsentPurpose" }, "status": { "$ref": "#/components/schemas/ConsentStatus" }, "consent_text_version": { "type": "string", "minLength": 1, "maxLength": 80 }, "expires_at": { "type": ["string", "null"], "format": "date-time" } }
+      },
+      "ClientConsentResponse": {
+        "type": "object", "additionalProperties": false, "required": ["id", "tenant_id", "client_id", "purpose", "status", "consent_text_version", "granted_at", "revoked_at", "expires_at", "created_at", "updated_at"],
+        "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "client_id": { "type": "string", "format": "uuid" }, "purpose": { "$ref": "#/components/schemas/ConsentPurpose" }, "status": { "$ref": "#/components/schemas/ConsentStatus" }, "consent_text_version": { "type": "string" }, "granted_at": { "type": "string", "format": "date-time" }, "revoked_at": { "type": ["string", "null"], "format": "date-time" }, "expires_at": { "type": ["string", "null"], "format": "date-time" }, "created_at": { "type": "string", "format": "date-time" }, "updated_at": { "type": "string", "format": "date-time" } }
+      },
+      "ClientConsentListResponse": {
+        "type": "object", "additionalProperties": false, "required": ["items"],
+        "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/ClientConsentResponse" } } }
+      },
+      "SessionStatus": { "type": "string", "enum": ["active", "completed", "cancelled"] },
+      "SessionGoalCreate": {
+        "type": "object", "additionalProperties": false, "required": ["title"],
+        "properties": { "title": { "type": "string", "minLength": 1, "maxLength": 200 }, "description": { "type": "string", "maxLength": 2000, "default": "" } }
+      },
+      "SessionCreateRequest": {
+        "type": "object", "additionalProperties": false, "required": ["client_id", "goal"],
+        "properties": { "client_id": { "type": "string", "format": "uuid" }, "goal": { "$ref": "#/components/schemas/SessionGoalCreate" } }
+      },
+      "SessionStatusUpdateRequest": {
+        "type": "object", "additionalProperties": false, "required": ["status"],
+        "properties": { "status": { "$ref": "#/components/schemas/SessionStatus" } }
+      },
+      "SessionGoalResponse": {
+        "type": "object", "additionalProperties": false, "required": ["id", "tenant_id", "client_id", "title", "description", "created_at", "updated_at"],
+        "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "client_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "description": { "type": "string" }, "created_at": { "type": "string", "format": "date-time" }, "updated_at": { "type": "string", "format": "date-time" } }
+      },
+      "SessionResponse": {
+        "type": "object", "additionalProperties": false, "required": ["id", "tenant_id", "client_id", "goal_id", "status", "started_at", "ended_at", "created_at", "updated_at", "goal"],
+        "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "client_id": { "type": "string", "format": "uuid" }, "goal_id": { "type": "string", "format": "uuid" }, "status": { "$ref": "#/components/schemas/SessionStatus" }, "started_at": { "type": "string", "format": "date-time" }, "ended_at": { "type": ["string", "null"], "format": "date-time" }, "created_at": { "type": "string", "format": "date-time" }, "updated_at": { "type": "string", "format": "date-time" }, "goal": { "$ref": "#/components/schemas/SessionGoalResponse" } }
+      },
+      "SessionListResponse": {
+        "type": "object", "additionalProperties": false, "required": ["items", "limit", "offset"],
+        "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/SessionResponse" } }, "limit": { "type": "integer" }, "offset": { "type": "integer" } }
+      },
+      "WorkflowRunStatus": { "type": "string", "enum": ["planned", "cancelled"] },
+      "WorkflowStepRunStatus": { "type": "string", "enum": ["planned", "blocked"] },
+      "WorkflowRunCreateRequest": {
+        "type": "object", "additionalProperties": false, "required": ["workflow_id"],
+        "properties": { "workflow_id": { "type": "string", "minLength": 1, "maxLength": 16, "pattern": "^W-[A-Z]$" } }
+      },
+      "WorkflowStepRunResponse": {
+        "type": "object", "additionalProperties": false, "required": ["id", "tenant_id", "workflow_run_id", "step_index", "module_id", "phase", "status", "created_at", "updated_at"],
+        "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "workflow_run_id": { "type": "string", "format": "uuid" }, "step_index": { "type": "integer", "minimum": 0 }, "module_id": { "type": "string" }, "phase": { "type": "string" }, "status": { "$ref": "#/components/schemas/WorkflowStepRunStatus" }, "created_at": { "type": "string", "format": "date-time" }, "updated_at": { "type": "string", "format": "date-time" } }
+      },
+      "WorkflowRunResponse": {
+        "type": "object", "additionalProperties": false, "required": ["id", "tenant_id", "session_id", "workflow_id", "workflow_slug", "status", "created_at", "updated_at", "steps"],
+        "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "session_id": { "type": "string", "format": "uuid" }, "workflow_id": { "type": "string" }, "workflow_slug": { "type": "string" }, "status": { "$ref": "#/components/schemas/WorkflowRunStatus" }, "created_at": { "type": "string", "format": "date-time" }, "updated_at": { "type": "string", "format": "date-time" }, "steps": { "type": "array", "items": { "$ref": "#/components/schemas/WorkflowStepRunResponse" } } }
+      },
+      "WorkflowRunListResponse": {
+        "type": "object", "additionalProperties": false, "required": ["items", "limit", "offset"],
+        "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/WorkflowRunResponse" } }, "limit": { "type": "integer" }, "offset": { "type": "integer" } }
+      },
+      "EventReplayItem": {
+        "type": "object", "additionalProperties": false, "required": ["event_id", "event_type", "occurred_at", "tenant_id", "correlation_id", "session_id", "workflow_run_id", "workflow_step_run_id", "resource_type", "resource_id", "payload"],
+        "properties": { "event_id": { "type": "string", "format": "uuid" }, "event_type": { "type": "string" }, "occurred_at": { "type": "string", "format": "date-time" }, "tenant_id": { "type": "string", "format": "uuid" }, "correlation_id": { "type": "string" }, "session_id": { "type": ["string", "null"], "format": "uuid" }, "workflow_run_id": { "type": ["string", "null"], "format": "uuid" }, "workflow_step_run_id": { "type": ["string", "null"], "format": "uuid" }, "resource_type": { "type": ["string", "null"] }, "resource_id": { "type": ["string", "null"] }, "payload": { "type": "object" } }
+      },
+      "EventReplayResponse": {
+        "type": "object", "additionalProperties": false, "required": ["items", "limit", "after_event_id", "next_cursor", "connection_state"],
+        "properties": { "items": { "type": "array", "items": { "$ref": "#/components/schemas/EventReplayItem" } }, "limit": { "type": "integer" }, "after_event_id": { "type": ["string", "null"], "format": "uuid" }, "next_cursor": { "type": ["string", "null"], "format": "uuid" }, "connection_state": { "type": "string", "const": "fallback" } }
+      }
+    }
+  }
+}

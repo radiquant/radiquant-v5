@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/events/radi144-jobtracker-event-binding.schema.v1.json",
+  "title": "radiquant-v5 Radi144 JobTracker Event Binding Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "jobtracker_event_binding_enabled",
+    "frontend_component",
+    "api_path",
+    "source_of_truth",
+    "event_types",
+    "api_triggered_execution_enabled",
+    "external_queue_enabled",
+    "gpu_cuda_execution_enabled"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_jobtracker_event_binding_v1" },
+    "jobtracker_event_binding_enabled": { "type": "boolean", "const": true },
+    "frontend_component": { "type": "string", "const": "apps/web-astro/src/components/JobTrackerStatusIsland.tsx" },
+    "api_path": { "type": "string", "const": "/sessions/{session_id}/events" },
+    "source_of_truth": { "type": "string", "const": "event_records" },
+    "event_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "api_triggered_execution_enabled": { "type": "boolean", "const": false },
+    "external_queue_enabled": { "type": "boolean", "const": false },
+    "gpu_cuda_execution_enabled": { "type": "boolean", "const": false }
+  }
+}

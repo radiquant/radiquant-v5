@@ -1,0 +1,42 @@
+{
+  "schema_id": "radi144_materialized_projection_constraints_decision_v1",
+  "decision": "record_constraints_before_orm_model",
+  "status": "constraints_recorded_model_disabled",
+  "constraints_recorded": true,
+  "orm_model_enabled": false,
+  "alembic_migration_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "required_future_gate": "radi144_materialized_projection_model_enablement_gate_decision",
+  "planned_constraints": [
+    "tenant_id_not_null",
+    "module_run_id_not_null",
+    "module_result_id_not_null",
+    "role_in_client_therapist",
+    "source_result_hash_not_null",
+    "projection_schema_id_not_null",
+    "projection_payload_json_not_null",
+    "unique_active_projection_per_module_result_role",
+    "raw_debug_allowed_false"
+  ],
+  "forbidden_columns": [
+    "raw_debug",
+    "debug_json",
+    "internal_state",
+    "client_vector",
+    "raw_resonance_matrix",
+    "normalized_matrix"
+  ],
+  "required_invariants": [
+    "constraints_contract_only_no_orm_model",
+    "constraints_contract_only_no_migration",
+    "tenant_constraint_required",
+    "role_constraint_required",
+    "unique_active_projection_constraint_required",
+    "raw_debug_columns_forbidden",
+    "no_projection_write_service",
+    "no_worker_projection_materialization",
+    "api_read_projection_remains_on_demand"
+  ]
+}

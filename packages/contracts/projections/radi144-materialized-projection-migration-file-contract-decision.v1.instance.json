@@ -1,0 +1,58 @@
+{
+  "schema_id": "radi144_materialized_projection_migration_file_contract_decision_v1",
+  "decision": "record_migration_file_contract_without_file_creation",
+  "status": "migration_file_contract_recorded_no_file",
+  "migration_file_contract_decision_recorded": true,
+  "planned_revision_file": "apps/api/alembic/versions/0008_module_projections.py",
+  "planned_revision": "0008_module_projections",
+  "planned_down_revision": "0007_engine_result_storage",
+  "planned_table": "module_projections",
+  "file_contract": {
+    "upgrade_operations": [
+      { "order": 1, "operation": "create_table", "target": "module_projections", "source": "table_contract.columns" },
+      { "order": 2, "operation": "create_foreign_keys", "target": "tenant_id,module_run_id,module_result_id", "source": "table_contract.foreign_keys" },
+      { "order": 3, "operation": "create_check_constraints", "target": "role,projection_schema_id,no_raw_debug_contract", "source": "table_contract.constraints" },
+      { "order": 4, "operation": "create_indexes", "target": "tenant_result,tenant_run,source_hash", "source": "table_contract.indexes" },
+      { "order": 5, "operation": "create_partial_unique_active_index", "target": "tenant_id,module_result_id,role,projection_schema_id where invalidated_at is null", "source": "active_unique_projection" }
+    ],
+    "downgrade_operations": [
+      { "order": 1, "operation": "drop_partial_unique_active_index", "target": "uq_module_projections_active_role" },
+      { "order": 2, "operation": "drop_indexes", "target": "ix_module_projections_*" },
+      { "order": 3, "operation": "drop_table", "target": "module_projections" }
+    ],
+    "dialect_notes": [
+      "sqlite_partial_unique_index_requires_where_clause",
+      "postgres_partial_unique_index_requires_postgresql_where_clause",
+      "json_column_must_follow_existing_project_json_strategy",
+      "foreign_keys_must_reference_existing_0007_engine_result_storage_tables"
+    ],
+    "forbidden_operations": [
+      "create_orm_model",
+      "create_write_service",
+      "wire_worker_materialization",
+      "create_runtime_route",
+      "store_raw_debug_payload",
+      "commit_transactions_inside_result_writer"
+    ]
+  },
+  "migration_file_enabled": false,
+  "alembic_revision_file_enabled": false,
+  "alembic_migration_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "orm_model_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "required_future_gate": "radi144_materialized_projection_migration_file_implementation_gate_decision",
+  "required_invariants": [
+    "decision_only_no_migration_file",
+    "decision_only_no_alembic_revision_file",
+    "decision_only_no_database_table",
+    "decision_only_no_orm_model",
+    "decision_only_no_write_service",
+    "no_worker_projection_materialization",
+    "api_read_projection_remains_on_demand",
+    "stored_result_payload_remains_source_of_truth",
+    "raw_debug_columns_forbidden",
+    "safe_bundling_only_within_single_safety_boundary"
+  ]
+}

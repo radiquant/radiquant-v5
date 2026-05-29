@@ -1,0 +1,30 @@
+{
+  "schema_id": "radi144_materialized_projection_model_enablement_decision_v1",
+  "decision": "defer_model_enablement_until_explicit_implementation_gate",
+  "status": "model_enablement_decision_recorded_model_disabled",
+  "model_enablement_decision_recorded": true,
+  "orm_model_enabled": false,
+  "alembic_migration_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "required_future_gate": "radi144_materialized_projection_orm_implementation_gate_decision",
+  "enablement_preconditions": [
+    "contract_schema_reviewed",
+    "relationship_contract_reviewed",
+    "constraints_contract_reviewed",
+    "migration_order_defined",
+    "rollback_policy_defined",
+    "legacy_validators_made_gate_aware"
+  ],
+  "required_invariants": [
+    "decision_only_no_orm_model",
+    "decision_only_no_alembic_revision",
+    "decision_only_no_database_table",
+    "decision_only_no_write_service",
+    "no_worker_projection_materialization",
+    "api_read_projection_remains_on_demand",
+    "stored_result_payload_remains_source_of_truth",
+    "raw_debug_columns_forbidden"
+  ]
+}

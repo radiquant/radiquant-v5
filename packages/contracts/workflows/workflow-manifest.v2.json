@@ -1,0 +1,189 @@
+{
+  "version": "2.0.0",
+  "status": "workflow_api_gate_enabled",
+  "source": "/opt/radiquant4/docs/restart-radiquant-v5/03_ENGINE_WORKFLOW_SUBSTEPPINGS.md",
+  "runtime_scope": {
+    "workflow_api_enabled": true,
+    "workflow_ui_enabled": false,
+    "engine_execution_enabled": false,
+    "realtime_required_but_not_enabled_until_fallback_gate": false,
+    "next_gate": "radi144_domain_service_gate"
+  },
+  "phases": [
+    { "id": "diagnose", "label_de": "Diagnose", "color_token": "phase.diagnose" },
+    { "id": "analyse", "label_de": "Analyse", "color_token": "phase.analyse" },
+    { "id": "harmonize", "label_de": "Harmonisierung", "color_token": "phase.harmonize" },
+    { "id": "reflect", "label_de": "Reflexion", "color_token": "phase.reflect" }
+  ],
+  "workflows": [
+    {
+      "id": "W-A",
+      "slug": "quick-diagnosis",
+      "name_de": "Schnell-Diagnose",
+      "purpose": "Kurzer diagnostischer Einstieg mit Radi144 und RadiWorks.",
+      "module_order": ["radi144", "radiworks"],
+      "phase_sequence": ["diagnose", "reflect"],
+      "required_consent_purposes": ["analysis"],
+      "realtime_required": true,
+      "fallback_required": true,
+      "status": "confirmed"
+    },
+    {
+      "id": "W-B",
+      "slug": "full-analysis",
+      "name_de": "Vollanalyse",
+      "purpose": "Vollständige synergetische 6-Modul-Kette.",
+      "module_order": ["radi144", "radiworks", "radimorphic", "radiblohm", "radithoms", "radicopen"],
+      "phase_sequence": ["diagnose", "analyse", "harmonize", "reflect"],
+      "required_consent_purposes": ["analysis", "harmonization"],
+      "realtime_required": true,
+      "fallback_required": true,
+      "status": "confirmed"
+    },
+    {
+      "id": "W-C",
+      "slug": "group-analysis",
+      "name_de": "Gruppenanalyse",
+      "purpose": "Analyse mehrerer Klienten oder Gruppenvergleich.",
+      "module_order": "configurable_manifested",
+      "phase_sequence": ["diagnose", "analyse", "reflect"],
+      "required_consent_purposes": ["analysis"],
+      "realtime_required": true,
+      "fallback_required": true,
+      "status": "confirmed"
+    },
+    {
+      "id": "W-D",
+      "slug": "trend-analysis",
+      "name_de": "Verlaufsanalyse",
+      "purpose": "Vergleich vergangener Sessions und Trends.",
+      "module_order": "trend_report_engine_optional_modules",
+      "phase_sequence": ["analyse", "reflect"],
+      "required_consent_purposes": ["trend_analysis"],
+      "realtime_required": false,
+      "fallback_required": false,
+      "status": "confirmed"
+    },
+    {
+      "id": "W-E",
+      "slug": "harmonization",
+      "name_de": "Harmonisierung",
+      "purpose": "Aus Analyse abgeleiteter Harmonisierungsplan mit Safety Gate.",
+      "module_order": ["radiblohm", "radithoms", "radicopen"],
+      "phase_sequence": ["harmonize", "reflect"],
+      "required_consent_purposes": ["harmonization"],
+      "realtime_required": true,
+      "fallback_required": true,
+      "approval_required": true,
+      "status": "confirmed"
+    },
+    {
+      "id": "W-F",
+      "slug": "direct-module",
+      "name_de": "Direktmodul",
+      "purpose": "Expertenmodus für genau ein Modul.",
+      "module_order": "exactly_one",
+      "phase_sequence": ["diagnose", "analyse", "harmonize", "reflect"],
+      "required_consent_purposes": ["analysis"],
+      "allowed_roles": ["therapist", "admin"],
+      "realtime_required": true,
+      "fallback_required": true,
+      "status": "confirmed"
+    },
+    {
+      "id": "W-L",
+      "slug": "labs",
+      "name_de": "Labs",
+      "purpose": "Feature-flagged Innovation: HRV, Quantum, LLM, SynergyGraph.",
+      "module_order": "feature_flagged",
+      "phase_sequence": ["analyse", "reflect"],
+      "required_consent_purposes": ["replay_research_use"],
+      "allowed_roles": ["admin", "researcher"],
+      "feature_flag_required": true,
+      "realtime_required": false,
+      "fallback_required": false,
+      "status": "confirmed"
+    }
+  ],
+  "modules": [
+    { "id": "radi144", "phase": "diagnose", "name": "Radi144", "first_vertical": true, "substeps_ref": "module_contracts.radi144" },
+    { "id": "radiworks", "phase": "diagnose", "name": "RadiWorks", "substeps_ref": "module_contracts.radiworks" },
+    { "id": "radimorphic", "phase": "analyse", "name": "RadiMorphic", "substeps_ref": "module_contracts.radimorphic" },
+    { "id": "radiblohm", "phase": "analyse", "name": "RadiBlohm", "substeps_ref": "module_contracts.radiblohm" },
+    { "id": "radithoms", "phase": "harmonize", "name": "RadiThoms", "substeps_ref": "module_contracts.radithoms" },
+    { "id": "radicopen", "phase": "harmonize", "name": "RadiCopen", "substeps_ref": "module_contracts.radicopen" }
+  ],
+  "global_pre_module_gates": [
+    "tenant_role_context",
+    "client_selection",
+    "consent_purpose_gate",
+    "session_intent",
+    "input_completeness",
+    "protocol_selection",
+    "hardware_readiness",
+    "realtime_channel_or_explicit_fallback",
+    "job_plan"
+  ],
+  "global_post_module_gates": [
+    "cross_module_synergy_merge",
+    "conflict_resolution",
+    "therapist_interpretation_gate",
+    "client_projection_build",
+    "harmonization_plan_build",
+    "report_generation",
+    "followup_recommendation",
+    "data_retention_tagging",
+    "final_audit"
+  ],
+  "module_contracts": {
+    "radi144": {
+      "phase": "diagnose",
+      "required_pre_gates": ["tenant_role_context", "client_selection", "consent_purpose_gate", "session_intent"],
+      "required_post_gates": ["client_projection_build", "data_retention_tagging", "final_audit"],
+      "substeps": ["input_context_load", "data_quality_check", "biofield_signature_vectorize", "reference_matrix_load", "compute_path_select", "resonance_matrix_compute", "matrix_normalize", "coherence_extract", "biofield_mapping", "confidence_uncertainty", "synergy_seed_create", "result_persist", "event_audit_complete"]
+    },
+    "radiworks": {
+      "phase": "diagnose",
+      "required_pre_gates": ["tenant_role_context", "client_selection", "consent_purpose_gate", "session_intent"],
+      "required_post_gates": ["client_projection_build", "data_retention_tagging", "final_audit"],
+      "substeps": ["rate_database_scope", "entropy_source_check", "stochastic_sampling", "rate_scoring", "potency_analysis", "balance_indicator", "optional_hrv_gating", "synergy_buffer_modulation"]
+    },
+    "radimorphic": {
+      "phase": "analyse",
+      "required_pre_gates": ["tenant_role_context", "client_selection", "consent_purpose_gate", "session_intent", "protocol_selection"],
+      "required_post_gates": ["cross_module_synergy_merge", "client_projection_build", "final_audit"],
+      "substeps": ["signature_encoding", "hadamard_multiplex_plan", "multiplex_scan", "signal_noise_quality", "resonance_cluster_extraction", "holographic_entropy", "nls_profile_matching", "synergy_alignment"]
+    },
+    "radiblohm": {
+      "phase": "analyse",
+      "required_pre_gates": ["tenant_role_context", "client_selection", "consent_purpose_gate", "session_intent", "protocol_selection"],
+      "required_post_gates": ["cross_module_synergy_merge", "harmonization_plan_build", "final_audit"],
+      "substeps": ["geometry_profile", "numeric_factor", "quantum_superposition_model", "field_coherence", "intention_weighting", "hardware_modulation", "optional_element_mapping", "harmonization_candidates"]
+    },
+    "radithoms": {
+      "phase": "harmonize",
+      "required_pre_gates": ["tenant_role_context", "client_selection", "consent_purpose_gate", "session_intent", "hardware_readiness"],
+      "required_post_gates": ["harmonization_plan_build", "data_retention_tagging", "final_audit"],
+      "substeps": ["client_5d_vector", "meridian_balance", "element_dominance", "optional_point_mapping", "attractor_profile", "frequency_harmonics", "hardware_ack", "live_monitoring"]
+    },
+    "radicopen": {
+      "phase": "harmonize",
+      "required_pre_gates": ["tenant_role_context", "client_selection", "consent_purpose_gate", "session_intent"],
+      "required_post_gates": ["client_projection_build", "data_retention_tagging", "final_audit"],
+      "substeps": ["letter_weighting_a1_z26", "adaptive_fibonacci_pair", "rate_data_generation", "potency_bonus", "entropy_factor", "level_resonance_13_levels", "harmonic_sequence", "optional_llm_safe_interpretation"]
+    }
+  },
+  "anti_drift_rules": [
+    "no_workflow_api_before_manifest_gate",
+    "no_workflow_ui_without_manifest_step",
+    "no_progress_without_event_or_explicit_fallback",
+    "no_harmonization_without_safety_gate",
+    "no_client_result_without_projection_builder",
+    "no_engine_execution_without_module_contract"
+  ],
+  "first_vertical_slice": {
+    "module_id": "radi144",
+    "workflow_ids": ["W-A", "W-B"],
+    "required_substeps": ["input_context_load", "data_quality_check", "biofield_signature_vectorize", "reference_matrix_load", "compute_path_select", "resonance_matrix_compute", "matrix_normalize", "coherence_extract", "biofield_mapping", "confidence_uncertainty", "synergy_seed_create", "result_persist", "event_audit_complete"]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema_id": "radi144_worker_progress_events_v1",
+  "worker_progress_events_enabled": true,
+  "event_writer_service": "apps/api/app/services/event_registry.py",
+  "required_event_types": [
+    "job.running",
+    "job.done",
+    "job.failed",
+    "module.radi144.started",
+    "module.radi144.completed",
+    "module.radi144.failed"
+  ],
+  "forbidden_payload_keys_enforced": true,
+  "api_triggered_execution_enabled": false,
+  "external_queue_enabled": false,
+  "gpu_cuda_execution_enabled": false
+}

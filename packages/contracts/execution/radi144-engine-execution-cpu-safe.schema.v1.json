@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/execution/radi144-engine-execution-cpu-safe.schema.v1.json",
+  "title": "radiquant-v5 Radi144 CPU Safe Execution Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "cpu_safe_execution_service_enabled",
+    "compute_backend",
+    "worker_runtime_may_call_service",
+    "worker_runtime_may_write_results",
+    "gpu_cuda_execution_enabled",
+    "service",
+    "result_schema_id",
+    "next_gate"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_engine_execution_cpu_safe_v1" },
+    "cpu_safe_execution_service_enabled": { "type": "boolean", "const": true },
+    "compute_backend": { "type": "string", "const": "cpu" },
+    "worker_runtime_may_call_service": { "type": "boolean", "const": false },
+    "worker_runtime_may_write_results": { "type": "boolean", "const": false },
+    "gpu_cuda_execution_enabled": { "type": "boolean", "const": false },
+    "service": { "type": "string", "const": "apps/api/app/services/radi144/cpu_safe_execution.py" },
+    "result_schema_id": { "type": "string", "const": "radi144_result_v1" },
+    "next_gate": { "type": "string", "const": "radi144_worker_cpu_execution_wiring_gate_decision" }
+  }
+}

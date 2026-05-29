@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-storage.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Storage Schema v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "tenant_id",
+    "module_run_id",
+    "module_result_id",
+    "role",
+    "projection_schema_id",
+    "projection_builder_version",
+    "source_result_hash",
+    "retention",
+    "projection_payload",
+    "invalidated_at",
+    "storage_implementation_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_storage_v1" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "module_run_id": { "type": "string", "format": "uuid" },
+    "module_result_id": { "type": "string", "format": "uuid" },
+    "role": { "type": "string", "enum": ["client", "therapist"] },
+    "projection_schema_id": { "type": "string", "enum": ["radi144_client_projection_v1", "radi144_therapist_projection_v1"] },
+    "projection_builder_version": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "source_result_hash": { "type": "string", "minLength": 16, "maxLength": 128 },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delete_after", "legal_basis", "raw_debug_allowed"],
+      "properties": {
+        "delete_after": { "type": "string" },
+        "legal_basis": { "type": "string", "minLength": 1 },
+        "raw_debug_allowed": { "type": "boolean", "const": false }
+      }
+    },
+    "projection_payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["role", "module_id", "raw_debug_excluded"],
+      "properties": {
+        "role": { "type": "string", "enum": ["client", "therapist"] },
+        "module_id": { "type": "string", "const": "radi144" },
+        "raw_debug_excluded": { "type": "boolean", "const": true }
+      }
+    },
+    "invalidated_at": { "type": ["string", "null"] },
+    "storage_implementation_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_id": "radi144_worker_cpu_execution_wiring_v1",
+  "worker_cpu_execution_wiring_enabled": true,
+  "worker_runtime_may_call_cpu_service": true,
+  "worker_runtime_may_write_results": true,
+  "compute_backend": "cpu",
+  "gpu_cuda_execution_enabled": false,
+  "api_triggered_execution_enabled": false,
+  "external_queue_enabled": false,
+  "consent_gate_required": true,
+  "result_writer_service": "apps/api/app/services/radi144/result_writer.py"
+}

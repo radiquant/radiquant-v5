@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/jobs/radi144-worker-runtime.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Worker Runtime Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "worker_runtime_service_enabled",
+    "engine_execution_enabled",
+    "result_writer_enabled_in_worker",
+    "projection_builder_enabled_in_worker",
+    "external_queue_enabled",
+    "process_policy",
+    "fail_closed_status"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_worker_runtime_v1" },
+    "worker_runtime_service_enabled": { "type": "boolean", "const": true },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "result_writer_enabled_in_worker": { "type": "boolean", "const": false },
+    "projection_builder_enabled_in_worker": { "type": "boolean", "const": false },
+    "external_queue_enabled": { "type": "boolean", "const": false },
+    "process_policy": { "type": "string", "const": "claim_queued_and_fail_closed_until_engine_execution_gate" },
+    "fail_closed_status": { "type": "string", "const": "failed_closed" }
+  }
+}

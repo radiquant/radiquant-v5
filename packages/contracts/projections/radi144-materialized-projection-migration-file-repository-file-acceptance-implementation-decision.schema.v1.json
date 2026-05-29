@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-migration-file-repository-file-acceptance-implementation-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Migration File Repository File Acceptance Implementation Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "migration_file_repository_file_acceptance_implementation_decision_recorded",
+    "planned_revision_file",
+    "planned_revision",
+    "planned_down_revision",
+    "planned_table",
+    "repository_file_acceptance_implementation_preconditions",
+    "migration_file_repository_file_acceptance_implementation_allowed",
+    "migration_file_repository_file_acceptance_allowed",
+    "migration_file_repository_file_review_implementation_allowed",
+    "migration_file_repository_file_review_allowed",
+    "migration_file_repository_file_access_implementation_allowed",
+    "migration_file_repository_file_access_allowed",
+    "migration_file_repository_file_permission_implementation_allowed",
+    "migration_file_repository_file_permission_allowed",
+    "migration_file_repository_file_authorization_implementation_allowed",
+    "migration_file_repository_file_authorization_allowed",
+    "migration_file_repository_file_approval_implementation_allowed",
+    "migration_file_repository_file_approval_allowed",
+    "migration_file_repository_file_validation_implementation_allowed",
+    "migration_file_repository_file_validation_allowed",
+    "migration_file_repository_file_preflight_implementation_allowed",
+    "migration_file_repository_file_preflight_allowed",
+    "migration_file_repository_file_readiness_implementation_allowed",
+    "migration_file_repository_file_readiness_allowed",
+    "migration_file_repository_file_closure_implementation_allowed",
+    "migration_file_repository_file_closure_allowed",
+    "migration_file_repository_file_finalization_implementation_allowed",
+    "migration_file_repository_file_finalization_allowed",
+    "migration_file_repository_file_publication_implementation_allowed",
+    "migration_file_repository_file_publication_allowed",
+    "migration_file_repository_file_release_implementation_allowed",
+    "migration_file_repository_file_release_allowed",
+    "migration_file_repository_file_opening_implementation_allowed",
+    "migration_file_repository_file_opening_allowed",
+    "migration_file_repository_file_activation_implementation_allowed",
+    "migration_file_repository_file_activation_allowed",
+    "migration_file_repository_file_enablement_implementation_allowed",
+    "migration_file_repository_file_enablement_allowed",
+    "migration_file_repository_file_execution_implementation_allowed",
+    "migration_file_repository_file_execution_allowed",
+    "migration_file_repository_file_materialization_implementation_allowed",
+    "migration_file_repository_file_materialization_allowed",
+    "migration_file_repository_file_write_implementation_allowed",
+    "migration_file_repository_file_write_allowed",
+    "migration_file_repository_file_creation_implementation_allowed",
+    "migration_file_repository_file_creation_allowed",
+    "migration_file_repository_introduction_implementation_allowed",
+    "migration_file_repository_introduction_allowed",
+    "migration_file_introduction_implementation_allowed",
+    "migration_file_introduction_allowed",
+    "migration_file_write_implementation_allowed",
+    "migration_file_write_allowed",
+    "migration_file_authoring_allowed",
+    "migration_file_enabled",
+    "migration_file_creation_allowed",
+    "alembic_revision_file_enabled",
+    "alembic_migration_enabled",
+    "projection_storage_tables_enabled",
+    "orm_model_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "required_future_gate",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "radi144_materialized_projection_migration_file_repository_file_acceptance_implementation_decision_v1"
+    },
+    "decision": {
+      "type": "string",
+      "const": "defer_migration_file_repository_file_acceptance_implementation_until_repository_file_admission_gate"
+    },
+    "status": {
+      "type": "string",
+      "const": "migration_file_repository_file_acceptance_implementation_deferred_no_file"
+    },
+    "migration_file_repository_file_acceptance_implementation_decision_recorded": {
+      "type": "boolean",
+      "const": true
+    },
+    "repository_file_acceptance_implementation_preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 10,
+      "uniqueItems": true
+    },
+    "required_future_gate": {
+      "type": "string",
+      "const": "radi144_materialized_projection_migration_file_repository_file_admission_gate_decision"
+    },
+    "required_invariants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 8,
+      "uniqueItems": true
+    },
+    "planned_revision_file": {
+      "type": "string",
+      "const": "apps/api/alembic/versions/0008_module_projections.py"
+    },
+    "planned_revision": {
+      "type": "string",
+      "const": "0008_module_projections"
+    },
+    "planned_down_revision": {
+      "type": "string",
+      "const": "0007_engine_result_storage"
+    },
+    "planned_table": {
+      "type": "string",
+      "const": "module_projections"
+    },
+    "migration_file_repository_file_acceptance_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_acceptance_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_review_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_review_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_access_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_access_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_permission_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_permission_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_authorization_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_authorization_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_approval_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_approval_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_validation_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_validation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_preflight_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_preflight_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_readiness_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_readiness_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_closure_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_closure_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_finalization_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_finalization_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_publication_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_publication_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_release_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_release_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_opening_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_opening_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_activation_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_activation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_enablement_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_enablement_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_execution_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_execution_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_materialization_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_materialization_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_write_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_write_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_creation_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_file_creation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_introduction_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_repository_introduction_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_introduction_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_introduction_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_write_implementation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_write_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_authoring_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_enabled": {
+      "type": "boolean",
+      "const": false
+    },
+    "migration_file_creation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "alembic_revision_file_enabled": {
+      "type": "boolean",
+      "const": false
+    },
+    "alembic_migration_enabled": {
+      "type": "boolean",
+      "const": false
+    },
+    "projection_storage_tables_enabled": {
+      "type": "boolean",
+      "const": false
+    },
+    "orm_model_enabled": {
+      "type": "boolean",
+      "const": false
+    },
+    "projection_write_service_enabled": {
+      "type": "boolean",
+      "const": false
+    },
+    "worker_projection_materialization_enabled": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/api/radi144-engine-api-boundary.v1.json",
+  "title": "radiquant-v5 Radi144 Engine API Boundary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "status",
+    "module_id",
+    "route_class",
+    "auth_required",
+    "tenant_guard_required",
+    "openapi_paths_enabled",
+    "runtime_routes_enabled",
+    "engine_execution_enabled",
+    "worker_jobs_enabled",
+    "result_persistence_enabled",
+    "client_projection_enabled",
+    "planned_endpoints",
+    "security_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_engine_api_boundary_v1" },
+    "status": { "type": "string", "const": "decision_only_not_opened" },
+    "module_id": { "type": "string", "const": "radi144" },
+    "route_class": { "type": "string", "const": "tenant" },
+    "auth_required": { "type": "boolean", "const": true },
+    "tenant_guard_required": { "type": "boolean", "const": true },
+    "openapi_paths_enabled": { "type": "boolean" },
+    "runtime_routes_enabled": { "type": "boolean" },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "worker_jobs_enabled": { "type": "boolean", "const": false },
+    "result_persistence_enabled": { "type": "boolean", "const": false },
+    "client_projection_enabled": { "type": "boolean", "const": false },
+    "planned_endpoints": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["method", "path", "purpose", "opens_runtime_execution"],
+        "properties": {
+          "method": { "type": "string", "enum": ["GET", "POST"] },
+          "path": { "type": "string", "pattern": "^/engines/radi144" },
+          "purpose": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "opens_runtime_execution": { "type": "boolean", "const": false }
+        }
+      }
+    },
+    "security_invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unclassified_route_fails_ci",
+        "frontend_route_requires_openapi_contract",
+        "token_in_url_allowed",
+        "wellbeing_language_only",
+        "medical_claims_allowed"
+      ],
+      "properties": {
+        "unclassified_route_fails_ci": { "type": "boolean", "const": true },
+        "frontend_route_requires_openapi_contract": { "type": "boolean", "const": true },
+        "token_in_url_allowed": { "type": "boolean", "const": false },
+        "wellbeing_language_only": { "type": "boolean", "const": true },
+        "medical_claims_allowed": { "type": "boolean", "const": false }
+      }
+    }
+  }
+}

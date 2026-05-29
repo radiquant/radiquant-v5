@@ -1,0 +1,47 @@
+{
+  "schema_id": "radi144_materialized_projection_storage_contract_decision_v1",
+  "decision": "record_storage_contract_without_storage_implementation",
+  "status": "storage_contract_recorded_storage_disabled",
+  "storage_contract_recorded": true,
+  "materialized_projection_storage_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "api_projection_reads_enabled": true,
+  "planned_storage_entity": "module_projections",
+  "source_of_truth": "module_results.result_payload_json",
+  "allowed_roles": ["client", "therapist"],
+  "required_future_gate": "radi144_materialized_projection_storage_schema_gate_decision",
+  "required_contract_fields": [
+    "tenant_id",
+    "module_run_id",
+    "module_result_id",
+    "role",
+    "projection_schema_id",
+    "projection_builder_version",
+    "source_result_hash",
+    "retention_json",
+    "projection_payload_json",
+    "invalidated_at"
+  ],
+  "forbidden_contract_fields": [
+    "raw_debug",
+    "debug_json",
+    "internal_state",
+    "client_vector",
+    "raw_resonance_matrix",
+    "normalized_matrix"
+  ],
+  "required_invariants": [
+    "contract_only_no_table",
+    "tenant_scoped_projection_contract",
+    "role_scoped_projection_contract",
+    "source_result_hash_required",
+    "retention_metadata_required",
+    "cache_invalidation_fields_required",
+    "no_raw_debug_projection_storage",
+    "api_read_projection_remains_on_demand",
+    "no_worker_projection_materialization",
+    "no_new_runtime_route"
+  ]
+}

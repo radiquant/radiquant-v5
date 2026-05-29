@@ -1,0 +1,37 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Radiquant v5 Shell' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="de" data-biorhythm="neutral">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title} · Radiquant v5</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <div class="shell">
+      <header class="shell-header" aria-label="Anwendungskopf">
+        <p class="muted">Radiquant v5</p>
+        <h1>{title}</h1>
+        <nav class="shell-nav" aria-label="Hauptnavigation">
+          <a href="/login">Login</a>
+          <a href="/dashboard">Dashboard-Shell</a>
+          <a href="/clients">Klienten</a>
+        </nav>
+      </header>
+      <main id="main-content" tabindex="-1">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

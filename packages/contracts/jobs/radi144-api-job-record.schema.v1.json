@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/jobs/radi144-api-job-record.schema.v1.json",
+  "title": "radiquant-v5 Radi144 API Job Record Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "api_job_records_enabled",
+    "worker_runtime_enabled",
+    "engine_execution_enabled",
+    "storage_entity",
+    "created_status",
+    "result_writes_in_route_enabled",
+    "projection_builder_in_create_route_enabled",
+    "tenant_guard_required"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_api_job_record_v1" },
+    "api_job_records_enabled": { "type": "boolean", "const": true },
+    "worker_runtime_enabled": { "type": "boolean", "const": false },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "storage_entity": { "type": "string", "const": "ModuleRun" },
+    "created_status": { "type": "string", "const": "queued" },
+    "result_writes_in_route_enabled": { "type": "boolean", "const": false },
+    "projection_builder_in_create_route_enabled": { "type": "boolean", "const": false },
+    "tenant_guard_required": { "type": "boolean", "const": true }
+  }
+}

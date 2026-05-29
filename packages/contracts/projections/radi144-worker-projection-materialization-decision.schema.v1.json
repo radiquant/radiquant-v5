@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-worker-projection-materialization-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Worker Projection Materialization Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "worker_projection_materialization_enabled",
+    "materialized_projection_storage_enabled",
+    "worker_projection_builder_enabled",
+    "api_projection_reads_enabled",
+    "source_of_truth",
+    "required_future_gate",
+    "roles",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_worker_projection_materialization_decision_v1" },
+    "decision": { "type": "string", "const": "defer_worker_projection_materialization_until_storage_contract" },
+    "status": { "type": "string", "const": "worker_projection_materialization_deferred_api_read_projection_only" },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "materialized_projection_storage_enabled": { "type": "boolean", "const": false },
+    "worker_projection_builder_enabled": { "type": "boolean", "const": false },
+    "api_projection_reads_enabled": { "type": "boolean", "const": true },
+    "source_of_truth": { "type": "string", "const": "module_results.result_payload_json" },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_storage_gate_decision" },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["client", "therapist"] },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "required_invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 6,
+      "uniqueItems": true
+    }
+  }
+}

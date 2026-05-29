@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-projection-cache-policy-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Projection Cache Policy Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "projection_cache_policy_recorded",
+    "projection_cache_enabled",
+    "projection_cache_storage_enabled",
+    "projection_cache_write_service_enabled",
+    "api_projection_reads_enabled",
+    "source_of_truth",
+    "cache_mode",
+    "invalidation_required_before_storage",
+    "required_future_gate",
+    "required_invalidation_triggers",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_projection_cache_policy_decision_v1" },
+    "decision": { "type": "string", "const": "record_no_cache_policy_until_storage_contract" },
+    "status": { "type": "string", "const": "projection_cache_policy_recorded_cache_disabled" },
+    "projection_cache_policy_recorded": { "type": "boolean", "const": true },
+    "projection_cache_enabled": { "type": "boolean", "const": false },
+    "projection_cache_storage_enabled": { "type": "boolean", "const": false },
+    "projection_cache_write_service_enabled": { "type": "boolean", "const": false },
+    "api_projection_reads_enabled": { "type": "boolean", "const": true },
+    "source_of_truth": { "type": "string", "const": "module_results.result_payload_json" },
+    "cache_mode": { "type": "string", "const": "no_cache_on_demand_projection_only" },
+    "invalidation_required_before_storage": { "type": "boolean", "const": true },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_storage_contract_gate_decision" },
+    "required_invalidation_triggers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "required_invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 7,
+      "uniqueItems": true
+    }
+  }
+}

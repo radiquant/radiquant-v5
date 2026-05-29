@@ -1,0 +1,19 @@
+{
+  "schema_id": "radi144_result_storage_v1",
+  "status": "storage_model_initialized_runtime_writes_blocked",
+  "module_id": "radi144",
+  "storage_enabled": true,
+  "runtime_writes_enabled": false,
+  "api_runtime_routes_enabled": false,
+  "worker_jobs_enabled": false,
+  "engine_execution_enabled": false,
+  "tables": ["module_runs", "module_results", "module_provenances"],
+  "required_invariants": {
+    "tenant_scoped": true,
+    "retention_metadata_required": true,
+    "provenance_required": true,
+    "raw_debug_columns_forbidden": true,
+    "client_projection_required": true,
+    "projection_status": "pending_projection_builder"
+  }
+}

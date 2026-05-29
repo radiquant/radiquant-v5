@@ -1,0 +1,11 @@
+{
+  "schema_id": "radi144_engine_execution_cpu_safe_v1",
+  "cpu_safe_execution_service_enabled": true,
+  "compute_backend": "cpu",
+  "worker_runtime_may_call_service": false,
+  "worker_runtime_may_write_results": false,
+  "gpu_cuda_execution_enabled": false,
+  "service": "apps/api/app/services/radi144/cpu_safe_execution.py",
+  "result_schema_id": "radi144_result_v1",
+  "next_gate": "radi144_worker_cpu_execution_wiring_gate_decision"
+}

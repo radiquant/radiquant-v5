@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/route-security-manifest.schema.json",
+  "title": "radiquant-v5 Route Security Manifest v1",
+  "type": "object",
+  "required": ["version", "classes", "rules", "routes"],
+  "properties": {
+    "version": { "type": "string" },
+    "classes": { "type": "array", "minItems": 5 },
+    "rules": { "type": "object" },
+    "routes": { "type": "array" },
+    "planned_route_groups": { "type": "array" },
+    "forbidden_radiquant4_patterns": { "type": "array" }
+  }
+}

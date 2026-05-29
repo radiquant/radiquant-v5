@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/storage/radi144-result-storage.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Result Storage Boundary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "status",
+    "module_id",
+    "storage_enabled",
+    "runtime_writes_enabled",
+    "api_runtime_routes_enabled",
+    "worker_jobs_enabled",
+    "engine_execution_enabled",
+    "tables",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_result_storage_v1" },
+    "status": { "type": "string", "const": "storage_model_initialized_runtime_writes_blocked" },
+    "module_id": { "type": "string", "const": "radi144" },
+    "storage_enabled": { "type": "boolean", "const": true },
+    "runtime_writes_enabled": { "type": "boolean", "const": false },
+    "api_runtime_routes_enabled": { "type": "boolean", "const": false },
+    "worker_jobs_enabled": { "type": "boolean", "const": false },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "tables": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["module_runs", "module_results", "module_provenances"] },
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true
+    },
+    "required_invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tenant_scoped",
+        "retention_metadata_required",
+        "provenance_required",
+        "raw_debug_columns_forbidden",
+        "client_projection_required",
+        "projection_status"
+      ],
+      "properties": {
+        "tenant_scoped": { "type": "boolean", "const": true },
+        "retention_metadata_required": { "type": "boolean", "const": true },
+        "provenance_required": { "type": "boolean", "const": true },
+        "raw_debug_columns_forbidden": { "type": "boolean", "const": true },
+        "client_projection_required": { "type": "boolean", "const": true },
+        "projection_status": { "type": "string", "const": "pending_projection_builder" }
+      }
+    }
+  }
+}

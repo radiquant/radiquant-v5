@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/execution/radi144-engine-execution-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Engine Execution Gate Decision v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "engine_execution_enabled",
+    "cpu_execution_enabled",
+    "gpu_cuda_execution_enabled",
+    "worker_runtime_may_call_domain_service",
+    "worker_runtime_may_write_results",
+    "required_future_gate"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_engine_execution_decision_v1" },
+    "decision": { "type": "string", "const": "defer_execution_until_cpu_safe_gate" },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "cpu_execution_enabled": { "type": "boolean", "const": false },
+    "gpu_cuda_execution_enabled": { "type": "boolean", "const": false },
+    "worker_runtime_may_call_domain_service": { "type": "boolean", "const": false },
+    "worker_runtime_may_write_results": { "type": "boolean", "const": false },
+    "required_future_gate": { "type": "string", "const": "radi144_engine_execution_cpu_safe_gate_decision" }
+  }
+}

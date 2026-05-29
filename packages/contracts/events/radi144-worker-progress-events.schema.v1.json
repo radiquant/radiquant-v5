@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/events/radi144-worker-progress-events.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Worker Progress Event Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "worker_progress_events_enabled",
+    "event_writer_service",
+    "required_event_types",
+    "forbidden_payload_keys_enforced",
+    "api_triggered_execution_enabled",
+    "external_queue_enabled",
+    "gpu_cuda_execution_enabled"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_worker_progress_events_v1" },
+    "worker_progress_events_enabled": { "type": "boolean", "const": true },
+    "event_writer_service": { "type": "string", "const": "apps/api/app/services/event_registry.py" },
+    "required_event_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "contains": { "const": "job.running" },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "forbidden_payload_keys_enforced": { "type": "boolean", "const": true },
+    "api_triggered_execution_enabled": { "type": "boolean", "const": false },
+    "external_queue_enabled": { "type": "boolean", "const": false },
+    "gpu_cuda_execution_enabled": { "type": "boolean", "const": false }
+  }
+}

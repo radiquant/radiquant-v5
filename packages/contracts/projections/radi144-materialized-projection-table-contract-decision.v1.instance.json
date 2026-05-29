@@ -1,0 +1,66 @@
+{
+  "schema_id": "radi144_materialized_projection_table_contract_decision_v1",
+  "decision": "record_table_contract_without_ddl_implementation",
+  "status": "table_contract_recorded_no_table",
+  "table_contract_decision_recorded": true,
+  "planned_table": "module_projections",
+  "table_contract": {
+    "columns": [
+      { "name": "id", "type": "uuid", "nullable": false, "purpose": "primary_key" },
+      { "name": "tenant_id", "type": "uuid", "nullable": false, "purpose": "tenant_isolation" },
+      { "name": "module_run_id", "type": "uuid", "nullable": false, "purpose": "source_run" },
+      { "name": "module_result_id", "type": "uuid", "nullable": false, "purpose": "source_result" },
+      { "name": "role", "type": "varchar(32)", "nullable": false, "purpose": "projection_visibility_role" },
+      { "name": "projection_schema_id", "type": "varchar(120)", "nullable": false, "purpose": "projection_contract_version" },
+      { "name": "projection_builder_version", "type": "varchar(80)", "nullable": false, "purpose": "builder_version" },
+      { "name": "source_result_hash", "type": "varchar(128)", "nullable": false, "purpose": "source_result_integrity" },
+      { "name": "projection_payload_json", "type": "json", "nullable": false, "purpose": "role_safe_projection_payload" },
+      { "name": "retention_json", "type": "json", "nullable": false, "purpose": "retention_metadata" },
+      { "name": "invalidated_at", "type": "datetime", "nullable": true, "purpose": "active_projection_invalidation" },
+      { "name": "created_at", "type": "datetime", "nullable": false, "purpose": "audit_timestamp" },
+      { "name": "updated_at", "type": "datetime", "nullable": false, "purpose": "audit_timestamp" }
+    ],
+    "foreign_keys": [
+      { "column": "tenant_id", "references": "tenants.id", "on_delete": "RESTRICT" },
+      { "column": "module_run_id", "references": "module_runs.id", "on_delete": "CASCADE" },
+      { "column": "module_result_id", "references": "module_results.id", "on_delete": "CASCADE" }
+    ],
+    "constraints": [
+      { "name": "pk_module_projections", "kind": "primary_key", "columns": ["id"] },
+      { "name": "ck_module_projections_role", "kind": "check", "expression": "role IN ('client', 'therapist')" },
+      { "name": "ck_module_projections_schema_id", "kind": "check", "expression": "projection_schema_id IN ('radi144_client_projection_v1', 'radi144_therapist_projection_v1')" },
+      { "name": "uq_module_projections_active_role", "kind": "unique_active_projection", "columns": ["tenant_id", "module_result_id", "role", "projection_schema_id"], "where": "invalidated_at IS NULL" },
+      { "name": "ck_module_projections_no_raw_debug", "kind": "contract_guard", "expression": "raw_debug columns forbidden; payload must be role-safe" }
+    ],
+    "indexes": [
+      { "name": "ix_module_projections_tenant_result", "columns": ["tenant_id", "module_result_id"] },
+      { "name": "ix_module_projections_tenant_run", "columns": ["tenant_id", "module_run_id"] },
+      { "name": "ix_module_projections_source_hash", "columns": ["source_result_hash"] },
+      { "name": "ix_module_projections_active", "columns": ["tenant_id", "role", "projection_schema_id"], "where": "invalidated_at IS NULL" }
+    ],
+    "forbidden_columns": [
+      "raw_payload_json",
+      "debug_payload_json",
+      "internal_payload_json",
+      "client_vector_json",
+      "raw_resonance_matrix_json"
+    ]
+  },
+  "alembic_migration_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "orm_model_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "required_future_gate": "radi144_materialized_projection_table_ddl_implementation_gate_decision",
+  "required_invariants": [
+    "decision_only_no_database_table",
+    "decision_only_no_alembic_revision",
+    "decision_only_no_orm_model",
+    "decision_only_no_write_service",
+    "no_worker_projection_materialization",
+    "api_read_projection_remains_on_demand",
+    "stored_result_payload_remains_source_of_truth",
+    "raw_debug_columns_forbidden",
+    "safe_bundling_only_within_single_safety_boundary"
+  ]
+}

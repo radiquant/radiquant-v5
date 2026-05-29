@@ -1,0 +1,10 @@
+{
+  "schema_id": "radi144_worker_runtime_v1",
+  "worker_runtime_service_enabled": true,
+  "engine_execution_enabled": false,
+  "result_writer_enabled_in_worker": false,
+  "projection_builder_enabled_in_worker": false,
+  "external_queue_enabled": false,
+  "process_policy": "claim_queued_and_fail_closed_until_engine_execution_gate",
+  "fail_closed_status": "failed_closed"
+}

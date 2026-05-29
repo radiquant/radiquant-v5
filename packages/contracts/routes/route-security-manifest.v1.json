@@ -1,0 +1,201 @@
+{
+  "version": "1.0.0",
+  "status": "planning_contract",
+  "source": "/opt/radiquant4/docs/pi/routes.yml",
+  "classes": ["public", "auth", "tenant", "admin", "internal"],
+  "rules": {
+    "unclassified_route_fails_ci": true,
+    "frontend_route_requires_api_contract": true,
+    "runtime_openapi_must_equal_committed": true
+  },
+  "routes": [
+    {
+      "path": "/health",
+      "methods": ["GET"],
+      "class": "public",
+      "operation_id": "getHealth",
+      "rationale": "Minimal health check without tenant or sensitive metadata.",
+      "constraints": ["no_tenant_data", "no_sensitive_metadata", "rate_limited_later"]
+    },
+    {
+      "path": "/auth/login",
+      "methods": ["POST"],
+      "class": "public",
+      "operation_id": "login",
+      "rationale": "Identity public exception for tenant-scoped login; returns only token and identity projection.",
+      "constraints": ["no_client_data", "audit_login_security_event", "rate_limited_later"]
+    },
+    {
+      "path": "/auth/logout",
+      "methods": ["POST"],
+      "class": "auth",
+      "operation_id": "logout",
+      "rationale": "Authenticated identity logout audit event without tenant domain data.",
+      "constraints": ["valid_session_required", "audit_login_security_event"]
+    },
+    {
+      "path": "/clients",
+      "methods": ["POST"],
+      "class": "tenant",
+      "operation_id": "createClientProfile",
+      "rationale": "Create a tenant-scoped human client profile after identity, tenant guard, and audit gates.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "audit_required"]
+    },
+    {
+      "path": "/clients",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "listClientProfiles",
+      "rationale": "List only client profiles owned by the authenticated tenant.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required"]
+    },
+    {
+      "path": "/clients/{client_id}",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "getClientProfile",
+      "rationale": "Read a tenant-owned client profile without revealing wrong-tenant existence.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required"]
+    },
+    {
+      "path": "/clients/{client_id}",
+      "methods": ["PATCH"],
+      "class": "tenant",
+      "operation_id": "updateClientProfile",
+      "rationale": "Update safe profile fields for a tenant-owned client and append audit event.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "audit_required"]
+    },
+    {
+      "path": "/clients/{client_id}/consents",
+      "methods": ["POST"],
+      "class": "tenant",
+      "operation_id": "recordClientConsent",
+      "rationale": "Record consent for a tenant-owned client before sensitive downstream processing.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "audit_required"]
+    },
+    {
+      "path": "/clients/{client_id}/consents",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "listClientConsents",
+      "rationale": "List consent records only for a tenant-owned client.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required"]
+    },
+    {
+      "path": "/sessions",
+      "methods": ["POST"],
+      "class": "tenant",
+      "operation_id": "createSession",
+      "rationale": "Start a minimal tenant-scoped client session only after active analysis consent.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "consent_required", "audit_required"]
+    },
+    {
+      "path": "/sessions",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "listSessions",
+      "rationale": "List only sessions owned by the authenticated tenant.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required"]
+    },
+    {
+      "path": "/sessions/{session_id}",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "getSession",
+      "rationale": "Read a tenant-owned session without workflow or engine state.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required"]
+    },
+    {
+      "path": "/sessions/{session_id}/status",
+      "methods": ["PATCH"],
+      "class": "tenant",
+      "operation_id": "updateSessionStatus",
+      "rationale": "Close a tenant-owned minimal session without workflow side effects.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "audit_required"]
+    },
+    {
+      "path": "/sessions/{session_id}/workflow-runs",
+      "methods": ["POST"],
+      "class": "tenant",
+      "operation_id": "createWorkflowRun",
+      "rationale": "Create a manifest-derived workflow plan for an active tenant-owned session without engine execution or realtime progress.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "workflow_manifest_required", "consent_required", "audit_required", "no_engine_execution", "no_realtime_progress"]
+    },
+    {
+      "path": "/sessions/{session_id}/workflow-runs",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "listSessionWorkflowRuns",
+      "rationale": "List manifest-derived workflow plans for a tenant-owned session only.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "no_engine_execution", "no_realtime_progress"]
+    },
+    {
+      "path": "/sessions/{session_id}/events",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "listSessionEvents",
+      "rationale": "Replay tenant-scoped session events with a validated cursor as explicit fallback polling.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "replay_cursor_validated", "token_not_in_url", "fallback_required", "no_engine_execution"]
+    },
+    {
+      "path": "/sessions/{session_id}/events/stream",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "streamSessionEvents",
+      "rationale": "Return a finite SSE replay batch from the event log while fallback polling remains available.",
+      "constraints": ["valid_session_required", "tenant_context_required", "db_join_or_rls_required", "wrong_tenant_test_required", "replay_cursor_validated", "token_not_in_url", "fallback_required", "no_engine_execution", "no_job_tracker"]
+    },
+    {
+      "path": "/engines/radi144/jobs",
+      "methods": ["POST"],
+      "class": "tenant",
+      "operation_id": "createRadi144JobRecord",
+      "rationale": "Create a tenant-scoped Radi144 ModuleRun job record without worker runtime, result writes, projection builder, or execution.",
+      "constraints": ["valid_session_required", "tenant_context_required", "token_not_in_url", "db_join_or_rls_required", "wrong_tenant_test_required", "job_record_write_enabled", "no_worker_runtime", "no_engine_execution", "no_runtime_result_writes", "no_projection_builder"]
+    },
+    {
+      "path": "/engines/radi144/jobs/{job_id}",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "getRadi144JobBoundaryStatus",
+      "rationale": "Expose tenant-scoped Radi144 job record status without worker runtime.",
+      "constraints": ["valid_session_required", "tenant_context_required", "token_not_in_url", "db_join_or_rls_required", "wrong_tenant_test_required", "job_record_read_enabled", "no_worker_runtime", "no_engine_execution", "no_runtime_result_writes", "no_projection_builder"]
+    },
+    {
+      "path": "/engines/radi144/jobs/{job_id}/result",
+      "methods": ["GET"],
+      "class": "tenant",
+      "operation_id": "getRadi144ProjectedResult",
+      "rationale": "Read stored Radi144 results only through role-safe projections without raw/debug/internal data.",
+      "constraints": ["valid_session_required", "tenant_context_required", "token_not_in_url", "db_join_or_rls_required", "wrong_tenant_test_required", "job_record_read_enabled", "no_worker_runtime", "no_engine_execution", "no_runtime_result_writes", "projection_builder_required", "no_raw_debug_output"]
+    }
+  ],
+  "planned_route_groups": [
+    { "group": "identity", "default_class": "auth", "public_exceptions": ["login", "csrf_bootstrap", "password_reset_request"] },
+    { "group": "clients", "default_class": "tenant" },
+    { "group": "sessions", "default_class": "tenant" },
+    { "group": "workflows", "default_class": "tenant" },
+    { "group": "engines", "default_class": "tenant" },
+    { "group": "realtime", "default_class": "tenant" },
+    { "group": "harmonization", "default_class": "tenant" },
+    { "group": "reports", "default_class": "tenant" },
+    { "group": "gdpr", "default_class": "admin" },
+    { "group": "admin_ops", "default_class": "admin" },
+    { "group": "engine_internal", "default_class": "internal" }
+  ],
+  "security_core_gate": {
+    "status": "client_domain_api_initialized",
+    "first_runtime_route": "/health",
+    "route_manifest_required": true,
+    "runtime_route_diff_required": true,
+    "feature_routes_blocked_until_auth_tenant_audit_core": true
+  },
+  "forbidden_radiquant4_patterns": [
+    "public_dsgvo_mutation_routes",
+    "public_replay_routes",
+    "public_prognosis_by_session_id",
+    "public_hrv_gating_with_tenant_id_path",
+    "public_specialized_session_visualization",
+    "frontend_call_to_missing_backend_route"
+  ]
+}

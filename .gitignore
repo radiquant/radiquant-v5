@@ -1,0 +1,21 @@
+# Local/runtime
+.env
+.env.*
+!.env.example
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+build/
+.astro/
+coverage/
+
+# Local archives from pre-restart material
+_archive_pre_restart_*/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/

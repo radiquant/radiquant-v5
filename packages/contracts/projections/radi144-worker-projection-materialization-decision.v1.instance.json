@@ -1,0 +1,21 @@
+{
+  "schema_id": "radi144_worker_projection_materialization_decision_v1",
+  "decision": "defer_worker_projection_materialization_until_storage_contract",
+  "status": "worker_projection_materialization_deferred_api_read_projection_only",
+  "worker_projection_materialization_enabled": false,
+  "materialized_projection_storage_enabled": false,
+  "worker_projection_builder_enabled": false,
+  "api_projection_reads_enabled": true,
+  "source_of_truth": "module_results.result_payload_json",
+  "required_future_gate": "radi144_materialized_projection_storage_gate_decision",
+  "roles": ["client", "therapist"],
+  "required_invariants": [
+    "api_read_projection_remains_on_demand",
+    "no_worker_projection_builder_call",
+    "no_materialized_projection_table",
+    "no_projection_payload_write_in_worker",
+    "no_raw_debug_projection_storage",
+    "no_new_runtime_route",
+    "tenant_context_required_for_projection_reads"
+  ]
+}

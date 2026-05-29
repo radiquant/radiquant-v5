@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-orm-model-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection ORM Model Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "orm_model_decision_recorded",
+    "orm_model_enabled",
+    "alembic_migration_enabled",
+    "projection_storage_tables_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "planned_model",
+    "planned_table",
+    "required_future_gate",
+    "required_relationships",
+    "required_constraints",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_orm_model_decision_v1" },
+    "decision": { "type": "string", "const": "defer_orm_model_until_relationship_contract_gate" },
+    "status": { "type": "string", "const": "orm_model_decision_recorded_model_disabled" },
+    "orm_model_decision_recorded": { "type": "boolean", "const": true },
+    "orm_model_enabled": { "type": "boolean", "const": false },
+    "alembic_migration_enabled": { "type": "boolean", "const": false },
+    "projection_storage_tables_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "planned_model": { "type": "string", "const": "ModuleProjection" },
+    "planned_table": { "type": "string", "const": "module_projections" },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_relationship_contract_gate_decision" },
+    "required_relationships": { "type": "array", "items": { "type": "string" }, "minItems": 3, "uniqueItems": true },
+    "required_constraints": { "type": "array", "items": { "type": "string" }, "minItems": 4, "uniqueItems": true },
+    "required_invariants": { "type": "array", "items": { "type": "string" }, "minItems": 7, "uniqueItems": true }
+  }
+}

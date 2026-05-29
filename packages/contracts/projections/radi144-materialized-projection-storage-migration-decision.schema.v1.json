@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-storage-migration-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Storage Migration Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "migration_decision_recorded",
+    "alembic_migration_enabled",
+    "orm_model_enabled",
+    "projection_storage_tables_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "required_future_gate",
+    "planned_migration_entity",
+    "required_preconditions",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_storage_migration_decision_v1" },
+    "decision": { "type": "string", "const": "defer_migration_until_orm_model_gate" },
+    "status": { "type": "string", "const": "migration_decision_recorded_migration_disabled" },
+    "migration_decision_recorded": { "type": "boolean", "const": true },
+    "alembic_migration_enabled": { "type": "boolean", "const": false },
+    "orm_model_enabled": { "type": "boolean", "const": false },
+    "projection_storage_tables_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_orm_model_gate_decision" },
+    "planned_migration_entity": { "type": "string", "const": "module_projections" },
+    "required_preconditions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "required_invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 7,
+      "uniqueItems": true
+    }
+  }
+}

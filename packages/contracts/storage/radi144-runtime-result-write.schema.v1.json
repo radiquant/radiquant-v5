@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/storage/radi144-runtime-result-write.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Runtime Result Write Boundary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "status",
+    "module_id",
+    "write_service_enabled",
+    "api_result_writes_enabled",
+    "worker_jobs_enabled",
+    "engine_execution_enabled",
+    "projection_builder_enabled",
+    "required_inputs",
+    "write_targets",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_runtime_result_write_v1" },
+    "status": { "type": "string", "const": "write_service_enabled_not_wired_to_api_or_workers" },
+    "module_id": { "type": "string", "const": "radi144" },
+    "write_service_enabled": { "type": "boolean", "const": true },
+    "api_result_writes_enabled": { "type": "boolean", "const": false },
+    "worker_jobs_enabled": { "type": "boolean", "const": false },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "projection_builder_enabled": { "type": "boolean", "const": false },
+    "required_inputs": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["Radi144Result", "workflow_step_run_id", "tenant_context"] },
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true
+    },
+    "write_targets": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["module_runs", "module_results", "module_provenances"] },
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true
+    },
+    "required_invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tenant_scoped_workflow_step_required",
+        "raw_debug_forbidden",
+        "projection_status_pending",
+        "provenance_required",
+        "no_commit_inside_service"
+      ],
+      "properties": {
+        "tenant_scoped_workflow_step_required": { "type": "boolean", "const": true },
+        "raw_debug_forbidden": { "type": "boolean", "const": true },
+        "projection_status_pending": { "type": "string", "const": "pending_projection_builder" },
+        "provenance_required": { "type": "boolean", "const": true },
+        "no_commit_inside_service": { "type": "boolean", "const": true }
+      }
+    }
+  }
+}

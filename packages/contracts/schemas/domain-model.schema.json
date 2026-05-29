@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/domain-model.schema.json",
+  "title": "radiquant-v5 Domain Model v1",
+  "type": "object",
+  "required": ["version", "mvp_entity_scope", "domains", "rules"],
+  "properties": {
+    "version": { "type": "string" },
+    "status": { "type": "string" },
+    "source": { "type": "string" },
+    "mvp_entity_scope": { "type": "string" },
+    "domains": { "type": "array", "minItems": 1 },
+    "rules": { "type": "object" }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_id": "radi144_client_projection_v1",
+  "status": "boundary_decided_builder_not_opened",
+  "module_id": "radi144",
+  "builder_enabled": false,
+  "runtime_api_enabled": false,
+  "source_result_schema": "radi144_result_v1",
+  "roles": {
+    "client": {
+      "projection": "calm_summary",
+      "allowed_sections": [
+        "summary_label",
+        "quality_label",
+        "confidence_band",
+        "wellbeing_focus_labels",
+        "next_step_hint"
+      ],
+      "forbidden_sections": [
+        "raw_engine_output",
+        "raw_resonance_matrix",
+        "normalized_matrix",
+        "client_vector",
+        "debug_json",
+        "internal_state",
+        "admin_ops_data"
+      ]
+    },
+    "therapist": {
+      "projection": "professional_detail",
+      "allowed_sections": [
+        "workflow_steps",
+        "substeps",
+        "coherence_scores",
+        "biofield_map",
+        "confidence",
+        "provenance",
+        "retention",
+        "therapist_approval_gates"
+      ],
+      "forbidden_sections": [
+        "raw_resonance_matrix",
+        "client_vector",
+        "raw_debug",
+        "debug_json",
+        "access_token",
+        "password"
+      ]
+    }
+  },
+  "forbidden_fields": [
+    "raw_resonance_matrix",
+    "normalized_matrix",
+    "client_vector",
+    "raw_debug",
+    "debug_json",
+    "internal_state",
+    "access_token",
+    "password"
+  ],
+  "language_policy": {
+    "wellbeing_language_only": true,
+    "medical_claims_allowed": false,
+    "healing_claims_allowed": false
+  },
+  "privacy_policy": {
+    "tenant_scoped": true,
+    "purpose_required": true,
+    "raw_debug_excluded": true,
+    "client_projection_required": true
+  }
+}

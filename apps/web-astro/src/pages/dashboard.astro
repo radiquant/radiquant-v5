@@ -1,0 +1,10 @@
+---
+import { JobTrackerStatusIsland } from '../components/JobTrackerStatusIsland';
+import { RoleProjectionShell } from '../components/RoleProjectionShell';
+import AppShell from '../layouts/AppShell.astro';
+---
+
+<AppShell title="Dashboard" description="Contract-bound Radiquant v5 Dashboard-Shell">
+  <RoleProjectionShell client:load />
+  <JobTrackerStatusIsland client:load />
+</AppShell>

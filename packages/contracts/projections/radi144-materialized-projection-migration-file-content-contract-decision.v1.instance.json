@@ -1,0 +1,71 @@
+{
+  "schema_id": "radi144_materialized_projection_migration_file_content_contract_decision_v1",
+  "decision": "record_migration_file_content_contract_without_file_creation",
+  "status": "migration_file_content_contract_recorded_no_file",
+  "migration_file_content_contract_decision_recorded": true,
+  "planned_revision_file": "apps/api/alembic/versions/0008_module_projections.py",
+  "planned_revision": "0008_module_projections",
+  "planned_down_revision": "0007_engine_result_storage",
+  "planned_table": "module_projections",
+  "content_contract": {
+    "required_sections": [
+      "module_docstring_with_gate_name",
+      "revision_identifiers",
+      "upgrade_function",
+      "downgrade_function",
+      "dialect_specific_index_notes"
+    ],
+    "required_revision_identifiers": {
+      "revision": "0008_module_projections",
+      "down_revision": "0007_engine_result_storage",
+      "branch_labels": "None",
+      "depends_on": "None"
+    },
+    "required_imports": [
+      "from alembic import op",
+      "import sqlalchemy as sa"
+    ],
+    "required_upgrade_steps": [
+      "create_module_projections_table",
+      "create_tenant_run_result_foreign_keys",
+      "create_role_schema_raw_debug_check_constraints",
+      "create_tenant_result_run_source_hash_indexes",
+      "create_partial_unique_active_projection_index"
+    ],
+    "required_downgrade_steps": [
+      "drop_partial_unique_active_projection_index",
+      "drop_projection_indexes",
+      "drop_module_projections_table"
+    ],
+    "forbidden_content": [
+      "data_backfill",
+      "module_result_payload_mutation",
+      "orm_model_definition",
+      "projection_write_service",
+      "worker_materialization",
+      "runtime_route",
+      "raw_debug_payload_storage"
+    ]
+  },
+  "migration_file_enabled": false,
+  "migration_file_creation_allowed": false,
+  "alembic_revision_file_enabled": false,
+  "alembic_migration_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "orm_model_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "required_future_gate": "radi144_materialized_projection_migration_file_authoring_gate_decision",
+  "required_invariants": [
+    "decision_only_no_migration_file",
+    "decision_only_no_alembic_revision_file",
+    "decision_only_no_database_table",
+    "decision_only_no_orm_model",
+    "decision_only_no_write_service",
+    "no_worker_projection_materialization",
+    "api_read_projection_remains_on_demand",
+    "stored_result_payload_remains_source_of_truth",
+    "raw_debug_columns_forbidden",
+    "safe_bundling_only_within_single_safety_boundary"
+  ]
+}

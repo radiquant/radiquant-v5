@@ -1,0 +1,19 @@
+{
+  "schema_id": "radi144_runtime_result_write_v1",
+  "status": "write_service_enabled_not_wired_to_api_or_workers",
+  "module_id": "radi144",
+  "write_service_enabled": true,
+  "api_result_writes_enabled": false,
+  "worker_jobs_enabled": false,
+  "engine_execution_enabled": false,
+  "projection_builder_enabled": false,
+  "required_inputs": ["Radi144Result", "workflow_step_run_id", "tenant_context"],
+  "write_targets": ["module_runs", "module_results", "module_provenances"],
+  "required_invariants": {
+    "tenant_scoped_workflow_step_required": true,
+    "raw_debug_forbidden": true,
+    "projection_status_pending": "pending_projection_builder",
+    "provenance_required": true,
+    "no_commit_inside_service": true
+  }
+}

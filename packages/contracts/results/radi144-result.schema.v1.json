@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/results/radi144-result.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "module_run_id",
+    "tenant_id",
+    "client_id",
+    "session_id",
+    "workflow_run_id",
+    "module_id",
+    "algorithm_version",
+    "manifest_version",
+    "compute_backend",
+    "matrix_shape",
+    "coherence_scores",
+    "biofield_map",
+    "confidence",
+    "synergy_seed",
+    "provenance",
+    "retention",
+    "client_projection"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_result_v1" },
+    "module_run_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "client_id": { "type": "string", "format": "uuid" },
+    "session_id": { "type": "string", "format": "uuid" },
+    "workflow_run_id": { "type": "string", "format": "uuid" },
+    "module_id": { "type": "string", "const": "radi144" },
+    "algorithm_version": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "manifest_version": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "compute_backend": { "type": "string", "enum": ["cpu", "cuda", "simulation_disabled_until_engine_gate"] },
+    "matrix_shape": {
+      "type": "array",
+      "prefixItems": [{ "type": "integer", "const": 12 }, { "type": "integer", "const": 12 }],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "coherence_scores": {
+      "type": "object",
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 },
+      "minProperties": 12,
+      "maxProperties": 12
+    },
+    "biofield_map": {
+      "type": "object",
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 },
+      "minProperties": 12,
+      "maxProperties": 12
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "data_quality", "stability", "language_scope"],
+      "properties": {
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "data_quality": { "type": "number", "minimum": 0, "maximum": 1 },
+        "stability": { "type": "number", "minimum": 0, "maximum": 1 },
+        "language_scope": { "type": "string", "const": "wellbeing_only" }
+      }
+    },
+    "synergy_seed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_module", "top_labels", "confidence_score", "matrix_shape", "seed_checksum"],
+      "properties": {
+        "source_module": { "type": "string", "const": "radi144" },
+        "top_labels": { "type": "array", "items": { "type": "string" }, "minItems": 1, "maxItems": 3 },
+        "confidence_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "matrix_shape": {
+          "type": "array",
+          "prefixItems": [{ "type": "integer", "const": 12 }, { "type": "integer", "const": 12 }],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "seed_checksum": { "type": "string", "minLength": 16, "maxLength": 16 }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm_version",
+        "manifest_version",
+        "input_hash",
+        "reference_matrix_version",
+        "compute_backend",
+        "duration_ms"
+      ],
+      "properties": {
+        "algorithm_version": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "manifest_version": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "input_hash": { "type": "string", "minLength": 16, "maxLength": 128 },
+        "reference_matrix_version": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "compute_backend": { "type": "string", "enum": ["cpu", "cuda", "simulation_disabled_until_engine_gate"] },
+        "duration_ms": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "contains_sensitive_data", "client_projection_required", "raw_debug_allowed"],
+      "properties": {
+        "classification": { "type": "string", "enum": ["sensitive_module_result"] },
+        "contains_sensitive_data": { "type": "boolean", "const": true },
+        "client_projection_required": { "type": "boolean", "const": true },
+        "raw_debug_allowed": { "type": "boolean", "const": false }
+      }
+    },
+    "client_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summary_label", "quality_label", "raw_debug_excluded"],
+      "properties": {
+        "status": { "type": "string", "enum": ["pending_projection_builder"] },
+        "summary_label": { "type": "string", "maxLength": 160 },
+        "quality_label": { "type": "string", "maxLength": 80 },
+        "raw_debug_excluded": { "type": "boolean", "const": true }
+      }
+    }
+  }
+}

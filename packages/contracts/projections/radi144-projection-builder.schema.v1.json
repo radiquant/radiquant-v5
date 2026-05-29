@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-projection-builder.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Projection Builder Boundary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "status",
+    "module_id",
+    "builder_service_enabled",
+    "api_projection_reads_enabled",
+    "worker_jobs_enabled",
+    "engine_execution_enabled",
+    "roles",
+    "forbidden_fields",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_projection_builder_v1" },
+    "status": { "type": "string", "const": "builder_service_enabled_not_wired_to_api_or_ui" },
+    "module_id": { "type": "string", "const": "radi144" },
+    "builder_service_enabled": { "type": "boolean", "const": true },
+    "api_projection_reads_enabled": { "type": "boolean", "const": false },
+    "worker_jobs_enabled": { "type": "boolean", "const": false },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["client", "therapist"] },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "forbidden_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 8,
+      "uniqueItems": true
+    },
+    "required_invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "client_projection",
+        "therapist_projection",
+        "raw_debug_excluded",
+        "wellbeing_language_only",
+        "medical_claims_allowed"
+      ],
+      "properties": {
+        "client_projection": { "type": "string", "const": "calm_summary" },
+        "therapist_projection": { "type": "string", "const": "professional_detail" },
+        "raw_debug_excluded": { "type": "boolean", "const": true },
+        "wellbeing_language_only": { "type": "boolean", "const": true },
+        "medical_claims_allowed": { "type": "boolean", "const": false }
+      }
+    }
+  }
+}

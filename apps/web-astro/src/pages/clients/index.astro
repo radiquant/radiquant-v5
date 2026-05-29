@@ -1,0 +1,8 @@
+---
+import { ClientListIsland } from '../../components/ClientListIsland';
+import AppShell from '../../layouts/AppShell.astro';
+---
+
+<AppShell title="Klienten" description="Tenant-geschützte Klientenliste in Radiquant v5">
+  <ClientListIsland client:load />
+</AppShell>

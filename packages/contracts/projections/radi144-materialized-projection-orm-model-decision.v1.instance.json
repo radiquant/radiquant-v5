@@ -1,0 +1,36 @@
+{
+  "schema_id": "radi144_materialized_projection_orm_model_decision_v1",
+  "decision": "defer_orm_model_until_relationship_contract_gate",
+  "status": "orm_model_decision_recorded_model_disabled",
+  "orm_model_decision_recorded": true,
+  "orm_model_enabled": false,
+  "alembic_migration_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "planned_model": "ModuleProjection",
+  "planned_table": "module_projections",
+  "required_future_gate": "radi144_materialized_projection_relationship_contract_gate_decision",
+  "required_relationships": [
+    "ModuleProjection.tenant_id_to_tenants",
+    "ModuleProjection.module_run_id_to_module_runs",
+    "ModuleProjection.module_result_id_to_module_results"
+  ],
+  "required_constraints": [
+    "tenant_id_required",
+    "role_in_client_therapist",
+    "unique_module_result_role_when_active",
+    "raw_debug_columns_forbidden",
+    "source_result_hash_required"
+  ],
+  "required_invariants": [
+    "decision_only_no_orm_model",
+    "decision_only_no_alembic_revision",
+    "decision_only_no_database_table",
+    "tenant_scoped_model_required_before_enablement",
+    "role_scoped_uniqueness_required_before_enablement",
+    "no_projection_write_service",
+    "no_worker_projection_materialization",
+    "api_read_projection_remains_on_demand"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/jobs/radi144-external-queue-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 External Queue Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "external_queue_enabled",
+    "daemon_enabled",
+    "api_triggered_execution_enabled",
+    "gpu_cuda_execution_enabled",
+    "allowed_worker_invocation",
+    "required_future_gate",
+    "safety_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_external_queue_decision_v1" },
+    "decision": { "type": "string", "const": "defer_external_queue_until_operations_worker_gate" },
+    "status": { "type": "string", "const": "external_queue_deferred_internal_worker_only" },
+    "external_queue_enabled": { "type": "boolean", "const": false },
+    "daemon_enabled": { "type": "boolean", "const": false },
+    "api_triggered_execution_enabled": { "type": "boolean", "const": false },
+    "gpu_cuda_execution_enabled": { "type": "boolean", "const": false },
+    "allowed_worker_invocation": { "type": "string", "const": "internal_service_call_only" },
+    "required_future_gate": { "type": "string", "const": "radi144_operations_worker_gate_decision" },
+    "safety_invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 5,
+      "uniqueItems": true
+    }
+  }
+}

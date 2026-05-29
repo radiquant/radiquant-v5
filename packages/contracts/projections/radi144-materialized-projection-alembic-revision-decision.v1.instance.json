@@ -1,0 +1,37 @@
+{
+  "schema_id": "radi144_materialized_projection_alembic_revision_decision_v1",
+  "decision": "reserve_revision_plan_without_revision_file",
+  "status": "alembic_revision_decision_recorded_no_revision_file",
+  "alembic_revision_decision_recorded": true,
+  "planned_revision": "0008_module_projections",
+  "planned_table": "module_projections",
+  "alembic_revision_file_enabled": false,
+  "alembic_migration_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "orm_model_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "required_future_gate": "radi144_materialized_projection_alembic_revision_implementation_gate_decision",
+  "revision_preconditions": [
+    "ddl_implementation_decision_recorded",
+    "revision_identifier_reserved",
+    "depends_on_0007_engine_result_storage",
+    "upgrade_downgrade_test_plan_defined",
+    "sqlite_partial_index_strategy_finalized",
+    "postgres_partial_index_strategy_finalized",
+    "json_column_compatibility_finalized",
+    "orm_model_still_blocked",
+    "write_service_still_blocked"
+  ],
+  "required_invariants": [
+    "decision_only_no_alembic_revision_file",
+    "decision_only_no_database_table",
+    "decision_only_no_orm_model",
+    "decision_only_no_write_service",
+    "no_worker_projection_materialization",
+    "api_read_projection_remains_on_demand",
+    "stored_result_payload_remains_source_of_truth",
+    "raw_debug_columns_forbidden",
+    "safe_bundling_only_within_single_safety_boundary"
+  ]
+}

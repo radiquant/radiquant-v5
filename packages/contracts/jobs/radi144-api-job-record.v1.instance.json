@@ -1,0 +1,11 @@
+{
+  "schema_id": "radi144_api_job_record_v1",
+  "api_job_records_enabled": true,
+  "worker_runtime_enabled": false,
+  "engine_execution_enabled": false,
+  "storage_entity": "ModuleRun",
+  "created_status": "queued",
+  "result_writes_in_route_enabled": false,
+  "projection_builder_in_create_route_enabled": false,
+  "tenant_guard_required": true
+}

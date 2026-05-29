@@ -1,0 +1,20 @@
+{
+  "schema_id": "radi144_external_queue_decision_v1",
+  "decision": "defer_external_queue_until_operations_worker_gate",
+  "status": "external_queue_deferred_internal_worker_only",
+  "external_queue_enabled": false,
+  "daemon_enabled": false,
+  "api_triggered_execution_enabled": false,
+  "gpu_cuda_execution_enabled": false,
+  "allowed_worker_invocation": "internal_service_call_only",
+  "required_future_gate": "radi144_operations_worker_gate_decision",
+  "safety_invariants": [
+    "no_external_queue_daemon",
+    "no_api_triggered_execution",
+    "no_gpu_cuda_path",
+    "no_unbounded_loop_worker",
+    "no_new_runtime_route",
+    "transaction_owner_remains_caller",
+    "event_truth_remains_source_of_progress"
+  ]
+}

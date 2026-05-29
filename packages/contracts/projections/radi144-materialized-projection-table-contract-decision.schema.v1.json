@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-table-contract-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Table Contract Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "table_contract_decision_recorded",
+    "planned_table",
+    "table_contract",
+    "alembic_migration_enabled",
+    "projection_storage_tables_enabled",
+    "orm_model_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "required_future_gate",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_table_contract_decision_v1" },
+    "decision": { "type": "string", "const": "record_table_contract_without_ddl_implementation" },
+    "status": { "type": "string", "const": "table_contract_recorded_no_table" },
+    "table_contract_decision_recorded": { "type": "boolean", "const": true },
+    "planned_table": { "type": "string", "const": "module_projections" },
+    "table_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["columns", "foreign_keys", "constraints", "indexes", "forbidden_columns"],
+      "properties": {
+        "columns": { "type": "array", "items": { "type": "object" }, "minItems": 12 },
+        "foreign_keys": { "type": "array", "items": { "type": "object" }, "minItems": 3 },
+        "constraints": { "type": "array", "items": { "type": "object" }, "minItems": 4 },
+        "indexes": { "type": "array", "items": { "type": "object" }, "minItems": 3 },
+        "forbidden_columns": { "type": "array", "items": { "type": "string" }, "minItems": 3, "uniqueItems": true }
+      }
+    },
+    "alembic_migration_enabled": { "type": "boolean", "const": false },
+    "projection_storage_tables_enabled": { "type": "boolean", "const": false },
+    "orm_model_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_table_ddl_implementation_gate_decision" },
+    "required_invariants": { "type": "array", "items": { "type": "string" }, "minItems": 8, "uniqueItems": true }
+  }
+}

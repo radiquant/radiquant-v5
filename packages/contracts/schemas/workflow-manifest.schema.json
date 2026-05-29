@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/workflow-manifest.schema.json",
+  "title": "radiquant-v5 Workflow Manifest v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "status",
+    "runtime_scope",
+    "phases",
+    "workflows",
+    "modules",
+    "global_pre_module_gates",
+    "global_post_module_gates",
+    "module_contracts",
+    "anti_drift_rules",
+    "first_vertical_slice"
+  ],
+  "properties": {
+    "version": { "type": "string", "const": "2.0.0" },
+    "status": { "type": "string" },
+    "source": { "type": "string" },
+    "runtime_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workflow_api_enabled", "workflow_ui_enabled", "engine_execution_enabled", "realtime_required_but_not_enabled_until_fallback_gate", "next_gate"],
+      "properties": {
+        "workflow_api_enabled": { "type": "boolean", "const": false },
+        "workflow_ui_enabled": { "type": "boolean", "const": false },
+        "engine_execution_enabled": { "type": "boolean", "const": false },
+        "realtime_required_but_not_enabled_until_fallback_gate": { "type": "boolean", "const": true },
+        "next_gate": { "type": "string" }
+      }
+    },
+    "phases": { "type": "array", "minItems": 4 },
+    "workflows": { "type": "array", "minItems": 7 },
+    "modules": { "type": "array", "minItems": 6 },
+    "global_pre_module_gates": { "type": "array", "minItems": 1 },
+    "global_post_module_gates": { "type": "array", "minItems": 1 },
+    "module_contracts": { "type": "object", "minProperties": 6 },
+    "anti_drift_rules": { "type": "array", "minItems": 1 },
+    "first_vertical_slice": { "type": "object" }
+  }
+}

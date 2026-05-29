@@ -1,0 +1,26 @@
+{
+  "schema_id": "radi144_materialized_projection_storage_schema_decision_v1",
+  "decision": "record_storage_schema_without_implementation",
+  "status": "storage_schema_recorded_implementation_disabled",
+  "storage_schema_recorded": true,
+  "storage_schema_path": "packages/contracts/projections/radi144-materialized-projection-storage.schema.v1.json",
+  "storage_instance_path": "packages/contracts/projections/radi144-materialized-projection-storage.v1.instance.json",
+  "storage_implementation_enabled": false,
+  "projection_storage_tables_enabled": false,
+  "projection_write_service_enabled": false,
+  "worker_projection_materialization_enabled": false,
+  "api_projection_reads_enabled": true,
+  "required_future_gate": "radi144_materialized_projection_storage_migration_gate_decision",
+  "required_invariants": [
+    "schema_only_no_orm_model",
+    "schema_only_no_migration",
+    "schema_only_no_table",
+    "tenant_scoped_projection_schema",
+    "role_scoped_projection_schema",
+    "source_result_hash_required",
+    "retention_metadata_required",
+    "raw_debug_excluded_required",
+    "api_read_projection_remains_on_demand",
+    "no_worker_projection_materialization"
+  ]
+}

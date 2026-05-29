@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/execution/radi144-worker-cpu-execution-wiring.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Worker CPU Execution Wiring Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "worker_cpu_execution_wiring_enabled",
+    "worker_runtime_may_call_cpu_service",
+    "worker_runtime_may_write_results",
+    "compute_backend",
+    "gpu_cuda_execution_enabled",
+    "api_triggered_execution_enabled",
+    "external_queue_enabled",
+    "consent_gate_required",
+    "result_writer_service"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_worker_cpu_execution_wiring_v1" },
+    "worker_cpu_execution_wiring_enabled": { "type": "boolean", "const": true },
+    "worker_runtime_may_call_cpu_service": { "type": "boolean", "const": true },
+    "worker_runtime_may_write_results": { "type": "boolean", "const": true },
+    "compute_backend": { "type": "string", "const": "cpu" },
+    "gpu_cuda_execution_enabled": { "type": "boolean", "const": false },
+    "api_triggered_execution_enabled": { "type": "boolean", "const": false },
+    "external_queue_enabled": { "type": "boolean", "const": false },
+    "consent_gate_required": { "type": "boolean", "const": true },
+    "result_writer_service": { "type": "string", "const": "apps/api/app/services/radi144/result_writer.py" }
+  }
+}

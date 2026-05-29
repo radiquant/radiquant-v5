@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-storage-schema-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Storage Schema Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "storage_schema_recorded",
+    "storage_schema_path",
+    "storage_instance_path",
+    "storage_implementation_enabled",
+    "projection_storage_tables_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "api_projection_reads_enabled",
+    "required_future_gate",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_storage_schema_decision_v1" },
+    "decision": { "type": "string", "const": "record_storage_schema_without_implementation" },
+    "status": { "type": "string", "const": "storage_schema_recorded_implementation_disabled" },
+    "storage_schema_recorded": { "type": "boolean", "const": true },
+    "storage_schema_path": { "type": "string", "const": "packages/contracts/projections/radi144-materialized-projection-storage.schema.v1.json" },
+    "storage_instance_path": { "type": "string", "const": "packages/contracts/projections/radi144-materialized-projection-storage.v1.instance.json" },
+    "storage_implementation_enabled": { "type": "boolean", "const": false },
+    "projection_storage_tables_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "api_projection_reads_enabled": { "type": "boolean", "const": true },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_storage_migration_gate_decision" },
+    "required_invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 8,
+      "uniqueItems": true
+    }
+  }
+}

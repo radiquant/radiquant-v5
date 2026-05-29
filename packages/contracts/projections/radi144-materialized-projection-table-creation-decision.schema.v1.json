@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-table-creation-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Table Creation Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "table_creation_decision_recorded",
+    "planned_table",
+    "alembic_migration_enabled",
+    "projection_storage_tables_enabled",
+    "orm_model_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "required_future_gate",
+    "table_contract_preconditions",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_table_creation_decision_v1" },
+    "decision": { "type": "string", "const": "defer_table_creation_until_table_contract_gate" },
+    "status": { "type": "string", "const": "table_creation_decision_recorded_table_disabled" },
+    "table_creation_decision_recorded": { "type": "boolean", "const": true },
+    "planned_table": { "type": "string", "const": "module_projections" },
+    "alembic_migration_enabled": { "type": "boolean", "const": false },
+    "projection_storage_tables_enabled": { "type": "boolean", "const": false },
+    "orm_model_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_table_contract_gate_decision" },
+    "table_contract_preconditions": { "type": "array", "items": { "type": "string" }, "minItems": 7, "uniqueItems": true },
+    "required_invariants": { "type": "array", "items": { "type": "string" }, "minItems": 8, "uniqueItems": true }
+  }
+}

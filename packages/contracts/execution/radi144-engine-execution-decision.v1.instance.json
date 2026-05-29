@@ -1,0 +1,10 @@
+{
+  "schema_id": "radi144_engine_execution_decision_v1",
+  "decision": "defer_execution_until_cpu_safe_gate",
+  "engine_execution_enabled": false,
+  "cpu_execution_enabled": false,
+  "gpu_cuda_execution_enabled": false,
+  "worker_runtime_may_call_domain_service": false,
+  "worker_runtime_may_write_results": false,
+  "required_future_gate": "radi144_engine_execution_cpu_safe_gate_decision"
+}

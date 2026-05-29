@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/jobs/radi144-engine-job.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Engine Job Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "job_id",
+    "tenant_id",
+    "session_id",
+    "workflow_run_id",
+    "workflow_step_run_id",
+    "module_id",
+    "phase",
+    "job_kind",
+    "status",
+    "worker_runtime_enabled",
+    "engine_execution_enabled",
+    "api_exposure",
+    "result_persistence",
+    "client_projection",
+    "allowed_events",
+    "timeout_policy",
+    "fallback_policy"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_engine_job_v1" },
+    "job_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "session_id": { "type": "string", "format": "uuid" },
+    "workflow_run_id": { "type": "string", "format": "uuid" },
+    "workflow_step_run_id": { "type": "string", "format": "uuid" },
+    "module_id": { "type": "string", "const": "radi144" },
+    "phase": { "type": "string", "const": "diagnose" },
+    "job_kind": { "type": "string", "const": "engine_module_contract_only" },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "running", "waiting_for_hardware", "paused", "reconnecting", "fallback_polling", "completed", "failed", "cancelled"]
+    },
+    "worker_runtime_enabled": { "type": "boolean", "const": false },
+    "engine_execution_enabled": { "type": "boolean", "const": false },
+    "api_exposure": { "type": "string", "const": "blocked_until_engine_api_gate" },
+    "result_persistence": { "type": "string", "const": "blocked_until_result_persistence_gate" },
+    "client_projection": { "type": "string", "const": "blocked_until_client_projection_gate" },
+    "allowed_events": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "job.queued",
+          "job.running",
+          "job.paused",
+          "job.resumed",
+          "job.cancelled",
+          "job.done",
+          "job.failed",
+          "module.radi144.started",
+          "module.radi144.completed",
+          "module.radi144.failed",
+          "substep.started",
+          "substep.progress",
+          "substep.output.ready",
+          "substep.completed",
+          "substep.failed"
+        ]
+      },
+      "minItems": 8,
+      "uniqueItems": true
+    },
+    "timeout_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "max_total_timeout_s", "fail_closed"],
+      "properties": {
+        "source": { "type": "string", "const": "radi144_engine_manifest_substeps" },
+        "max_total_timeout_s": { "type": "integer", "minimum": 1, "maximum": 900 },
+        "fail_closed": { "type": "boolean", "const": true }
+      }
+    },
+    "fallback_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["missing_input", "hardware_unavailable", "partial_result_allowed", "synthetic_result_allowed"],
+      "properties": {
+        "missing_input": { "type": "string", "const": "fail_closed_no_partial_result" },
+        "hardware_unavailable": { "type": "string", "const": "cpu_plan_or_fail_closed" },
+        "partial_result_allowed": { "type": "boolean", "const": false },
+        "synthetic_result_allowed": { "type": "boolean", "const": false }
+      }
+    }
+  }
+}

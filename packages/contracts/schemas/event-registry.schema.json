@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/event-registry.schema.json",
+  "title": "radiquant-v5 Event Registry v1",
+  "type": "object",
+  "required": ["version", "status", "envelope_schema", "runtime_scope", "required_payload_fields", "families", "connection_states", "job_states", "payload_rules", "security"],
+  "properties": {
+    "version": { "type": "string" },
+    "status": { "type": "string" },
+    "envelope_schema": { "type": "string" },
+    "runtime_scope": { "type": "object" },
+    "required_payload_fields": { "type": "array", "minItems": 1 },
+    "families": { "type": "array", "minItems": 1 },
+    "connection_states": { "type": "array", "minItems": 1 },
+    "job_states": { "type": "array", "minItems": 1 },
+    "payload_rules": { "type": "object" },
+    "security": { "type": "object" }
+  }
+}

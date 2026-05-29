@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-client-projection.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Client Projection Boundary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "status",
+    "module_id",
+    "builder_enabled",
+    "runtime_api_enabled",
+    "source_result_schema",
+    "roles",
+    "forbidden_fields",
+    "language_policy",
+    "privacy_policy"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_client_projection_v1" },
+    "status": { "type": "string", "const": "boundary_decided_builder_not_opened" },
+    "module_id": { "type": "string", "const": "radi144" },
+    "builder_enabled": { "type": "boolean", "const": false },
+    "runtime_api_enabled": { "type": "boolean", "const": false },
+    "source_result_schema": { "type": "string", "const": "radi144_result_v1" },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["client", "therapist"],
+      "properties": {
+        "client": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["projection", "allowed_sections", "forbidden_sections"],
+          "properties": {
+            "projection": { "type": "string", "const": "calm_summary" },
+            "allowed_sections": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["summary_label", "quality_label", "confidence_band", "wellbeing_focus_labels", "next_step_hint"] },
+              "minItems": 3,
+              "uniqueItems": true
+            },
+            "forbidden_sections": {
+              "type": "array",
+              "items": { "type": "string" },
+              "minItems": 4,
+              "uniqueItems": true
+            }
+          }
+        },
+        "therapist": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["projection", "allowed_sections", "forbidden_sections"],
+          "properties": {
+            "projection": { "type": "string", "const": "professional_detail" },
+            "allowed_sections": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["workflow_steps", "substeps", "coherence_scores", "biofield_map", "confidence", "provenance", "retention", "therapist_approval_gates"] },
+              "minItems": 5,
+              "uniqueItems": true
+            },
+            "forbidden_sections": {
+              "type": "array",
+              "items": { "type": "string" },
+              "minItems": 3,
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "forbidden_fields": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["raw_resonance_matrix", "normalized_matrix", "client_vector", "raw_debug", "debug_json", "internal_state", "access_token", "password"] },
+      "minItems": 8,
+      "uniqueItems": true
+    },
+    "language_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wellbeing_language_only", "medical_claims_allowed", "healing_claims_allowed"],
+      "properties": {
+        "wellbeing_language_only": { "type": "boolean", "const": true },
+        "medical_claims_allowed": { "type": "boolean", "const": false },
+        "healing_claims_allowed": { "type": "boolean", "const": false }
+      }
+    },
+    "privacy_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tenant_scoped", "purpose_required", "raw_debug_excluded", "client_projection_required"],
+      "properties": {
+        "tenant_scoped": { "type": "boolean", "const": true },
+        "purpose_required": { "type": "boolean", "const": true },
+        "raw_debug_excluded": { "type": "boolean", "const": true },
+        "client_projection_required": { "type": "boolean", "const": true }
+      }
+    }
+  }
+}

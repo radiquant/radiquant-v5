@@ -1,0 +1,41 @@
+{
+  "schema_id": "radi144_engine_api_boundary_v1",
+  "status": "decision_only_not_opened",
+  "module_id": "radi144",
+  "route_class": "tenant",
+  "auth_required": true,
+  "tenant_guard_required": true,
+  "openapi_paths_enabled": true,
+  "runtime_routes_enabled": true,
+  "engine_execution_enabled": false,
+  "worker_jobs_enabled": false,
+  "result_persistence_enabled": false,
+  "client_projection_enabled": false,
+  "planned_endpoints": [
+    {
+      "method": "POST",
+      "path": "/engines/radi144/jobs",
+      "purpose": "Plan a tenant-scoped Radi144 job boundary without execution until the runtime worker gate opens.",
+      "opens_runtime_execution": false
+    },
+    {
+      "method": "GET",
+      "path": "/engines/radi144/jobs/{job_id}",
+      "purpose": "Read tenant-scoped job status from event-truth once the API contract gate opens.",
+      "opens_runtime_execution": false
+    },
+    {
+      "method": "GET",
+      "path": "/engines/radi144/jobs/{job_id}/result",
+      "purpose": "Read only projection-safe result metadata after persistence and projection gates open.",
+      "opens_runtime_execution": false
+    }
+  ],
+  "security_invariants": {
+    "unclassified_route_fails_ci": true,
+    "frontend_route_requires_openapi_contract": true,
+    "token_in_url_allowed": false,
+    "wellbeing_language_only": true,
+    "medical_claims_allowed": false
+  }
+}

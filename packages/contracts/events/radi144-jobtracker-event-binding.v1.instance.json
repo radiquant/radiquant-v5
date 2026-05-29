@@ -1,0 +1,18 @@
+{
+  "schema_id": "radi144_jobtracker_event_binding_v1",
+  "jobtracker_event_binding_enabled": true,
+  "frontend_component": "apps/web-astro/src/components/JobTrackerStatusIsland.tsx",
+  "api_path": "/sessions/{session_id}/events",
+  "source_of_truth": "event_records",
+  "event_types": [
+    "job.running",
+    "job.done",
+    "job.failed",
+    "module.radi144.started",
+    "module.radi144.completed",
+    "module.radi144.failed"
+  ],
+  "api_triggered_execution_enabled": false,
+  "external_queue_enabled": false,
+  "gpu_cuda_execution_enabled": false
+}

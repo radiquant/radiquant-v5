@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://radiquant.local/contracts/projections/radi144-materialized-projection-relationship-contract-decision.schema.v1.json",
+  "title": "radiquant-v5 Radi144 Materialized Projection Relationship Contract Decision Gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "decision",
+    "status",
+    "relationship_contract_recorded",
+    "orm_model_enabled",
+    "alembic_migration_enabled",
+    "projection_storage_tables_enabled",
+    "projection_write_service_enabled",
+    "worker_projection_materialization_enabled",
+    "required_future_gate",
+    "planned_relationships",
+    "planned_constraints",
+    "required_invariants"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "radi144_materialized_projection_relationship_contract_decision_v1" },
+    "decision": { "type": "string", "const": "record_relationship_contract_before_orm_model" },
+    "status": { "type": "string", "const": "relationship_contract_recorded_model_disabled" },
+    "relationship_contract_recorded": { "type": "boolean", "const": true },
+    "orm_model_enabled": { "type": "boolean", "const": false },
+    "alembic_migration_enabled": { "type": "boolean", "const": false },
+    "projection_storage_tables_enabled": { "type": "boolean", "const": false },
+    "projection_write_service_enabled": { "type": "boolean", "const": false },
+    "worker_projection_materialization_enabled": { "type": "boolean", "const": false },
+    "required_future_gate": { "type": "string", "const": "radi144_materialized_projection_constraints_gate_decision" },
+    "planned_relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "source", "target", "on_delete"],
+        "properties": {
+          "name": { "type": "string" },
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "on_delete": { "type": "string" }
+        }
+      },
+      "minItems": 3
+    },
+    "planned_constraints": { "type": "array", "items": { "type": "string" }, "minItems": 4, "uniqueItems": true },
+    "required_invariants": { "type": "array", "items": { "type": "string" }, "minItems": 7, "uniqueItems": true }
+  }
+}
