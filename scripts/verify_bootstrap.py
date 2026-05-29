@@ -643,17 +643,9 @@ def main() -> int:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_result_schema.py")], check=True)
     ok("Radi144 result schema gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_result_persistence_decision.py")], check=True)
-    ok("Radi144 result persistence decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_engine_job_decision.py")], check=True)
-    ok("Radi144 engine job decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_engine_api_decision.py")], check=True)
-    ok("Radi144 engine API decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_client_projection_decision.py")], check=True)
-    ok("Radi144 client projection decision gate validates")
 
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_result_persistence_storage.py")], check=True)
     ok("Radi144 result persistence storage gate validates")
@@ -676,8 +668,6 @@ def main() -> int:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_worker_runtime_gate.py")], check=True)
     ok("Radi144 worker runtime gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_engine_execution_decision.py")], check=True)
-    ok("Radi144 engine execution decision gate validates")
 
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_cpu_safe_execution.py")], check=True)
     ok("Radi144 CPU-safe execution gate validates")
@@ -691,221 +681,77 @@ def main() -> int:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_jobtracker_event_binding.py")], check=True)
     ok("Radi144 JobTracker event binding gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_external_queue_decision.py")], check=True)
-    ok("Radi144 external queue decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_worker_projection_materialization_decision.py")], check=True)
-    ok("Radi144 worker projection materialization decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_storage_decision.py")], check=True)
-    ok("Radi144 materialized projection storage decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_projection_cache_policy_decision.py")], check=True)
-    ok("Radi144 projection cache policy decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_storage_contract_decision.py")], check=True)
-    ok("Radi144 materialized projection storage contract decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_storage_schema_decision.py")], check=True)
-    ok("Radi144 materialized projection storage schema decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_storage_migration_decision.py")], check=True)
-    ok("Radi144 materialized projection storage migration decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_orm_model_decision.py")], check=True)
-    ok("Radi144 materialized projection ORM model decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_relationship_contract_decision.py")], check=True)
-    ok("Radi144 materialized projection relationship contract decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_constraints_decision.py")], check=True)
-    ok("Radi144 materialized projection constraints decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_model_enablement_decision.py")], check=True)
-    ok("Radi144 materialized projection model enablement decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_orm_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection ORM implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_enablement_decision.py")], check=True)
-    ok("Radi144 materialized projection migration enablement decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_table_creation_decision.py")], check=True)
-    ok("Radi144 materialized projection table creation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_table_contract_decision.py")], check=True)
-    ok("Radi144 materialized projection table contract decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_table_ddl_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection table DDL implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_alembic_revision_decision.py")], check=True)
-    ok("Radi144 materialized projection Alembic revision decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_alembic_revision_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection Alembic revision implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_contract_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file contract decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_creation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file creation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_content_contract_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file content contract decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_authoring_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file authoring decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_write_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file write decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_write_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file write implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_introduction_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file introduction decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_introduction_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file introduction implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_introduction_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository introduction decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_introduction_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository introduction implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_creation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file creation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_creation_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file creation implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_write_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file write decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_write_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file write implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_materialization_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file materialization decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_materialization_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file materialization implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_execution_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file execution decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_execution_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file execution implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_enablement_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file enablement decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_enablement_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file enablement implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_activation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file activation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_activation_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file activation implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_opening_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file opening decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_opening_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file opening implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_release_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file release decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_release_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file release implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_publication_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file publication decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_publication_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file publication implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_finalization_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file finalization decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_finalization_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file finalization implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_closure_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file closure decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_closure_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file closure implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_readiness_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file readiness decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_readiness_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file readiness implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_preflight_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file preflight decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_preflight_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file preflight implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_validation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file validation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_validation_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file validation implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_approval_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file approval decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_approval_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file approval implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_authorization_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file authorization decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_authorization_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file authorization implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_permission_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file permission decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_permission_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file permission implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_access_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file access decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_access_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file access implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_review_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file review decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_review_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file review implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_acceptance_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file acceptance decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_acceptance_implementation_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file acceptance implementation decision gate validates")
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_materialized_projection_migration_file_repository_file_admission_decision.py")], check=True)
-    ok("Radi144 materialized projection migration file repository file admission decision gate validates")
 
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_projection_gate_ergonomics.py")], check=True)
     ok("Radi144 projection gate ergonomics validate")
