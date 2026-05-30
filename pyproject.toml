@@ -1,11 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "radiquant-v5"
 version = "0.0.0"
 description = "Controlled ground-zero rebuild of the Radiquant radionics wellbeing platform."
 requires-python = ">=3.11,<3.13"
+dependencies = [
+    "fastapi==0.128.0",
+    "uvicorn==0.40.0",
+    "pydantic==2.12.5",
+    "pydantic-settings==2.12.0",
+    "sqlalchemy==2.0.45",
+    "greenlet==3.3.0",
+    "alembic==1.17.2",
+    "asyncpg==0.31.0",
+    "aiosqlite==0.22.1",
+    "pyjwt==2.6.0",
+    "python-multipart==0.0.21",
+    "email-validator==2.3.0",
+    "httpx==0.28.1",
+]
 
 [project.optional-dependencies]
-dev = ["pytest-timeout>=2.3"]
+dev = [
+    "pytest==9.0.2",
+    "pytest-asyncio==1.3.0",
+    "pytest-timeout==2.4.0",
+    "ruff==0.14.10",
+    "mypy==1.19.1",
+]
 
 [tool.ruff]
 line-length = 100
@@ -29,3 +54,6 @@ python_version = "3.11"
 warn_unused_configs = true
 ignore_missing_imports = true
 strict_optional = true
+
+[tool.setuptools]
+py-modules = []
