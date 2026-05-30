@@ -45,8 +45,7 @@ Die frühere rekursive Precondition-Kaskade (77 Check-Skripte + 76 Tests) ist ei
 | `f10a027` | 109 tote `REQUIRED_FILES`/`REFERENCE_FILES`-Einträge entfernt; `make verify` wieder grün. |
 
 ## 7. Bekannte Restschuld (nicht blockierend)
-- Finaler `print` in `scripts/verify_bootstrap.py` zählt noch ~100 eingefrorene Decision-Gates als "present" auf (rein kosmetisch).
-- `AGENTS.md` §5 verweist auf historische `SYSTEM_STATE.md (v10.0)` / `UMSETZUNGSPLAN.md` aus dem v4-Repo; diese Datei ist die maßgebliche v5-Statusquelle.
+- Aktuell keine offene Restschuld. (Stale verify-`print` im W0-Cleanup bereinigt; `AGENTS.md` enthaelt keine veralteten Statusverweise.)
 
 ## 8. Nächste Schritte
 - W0 abschließen, dann Folge-Wellen gemäß `/opt/radiquant4/docs/restart-radiquant-v5/08_OPTIMAL_REBUILD_SEQUENCE.md`.
