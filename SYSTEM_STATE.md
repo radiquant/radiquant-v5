@@ -2,7 +2,8 @@
 
 > Single Source of Truth für den **aktuellen** Ist-Zustand des v5-Rebuilds.
 > Onboarding/Decisions: siehe `README.md` und `docs/architecture/START_HERE.md`.
-> Detailplanung (historisch): `/opt/radiquant4/docs/restart-radiquant-v5/`.
+> **Umsetzungsplan + lebender Fortschritt (in-repo SSOT):** `docs/umsetzungsplan/` (README + Wellenplan W0–W9 + `05_FORTSCHRITT_LOG.md`).
+> Detailplanung/Analyse-Ursprung (historisch, radiquant4): `/opt/radiquant4/docs/restart-radiquant-v5/`.
 
 ## 1. Überblick
 - **Projekt:** Kontrollierter Ground-Zero-Rebuild der Radiquant-Wellbeing-Plattform.
@@ -13,11 +14,11 @@
 
 ## 2. Repo-Layout (Ist)
 - `apps/api/` — FastAPI-App, Services, Models, Routes, Alembic.
-- `apps/web-astro/` — Frontend (Astro + React Islands).
+- `apps/web-astro/` — Frontend-Stub (Astro + React Islands geplant; **noch keine Node-Deps deklariert**, nicht baubar — Schuld S-01).
 - `packages/contracts/` — Contract-Schemas/Instances (Daten-SSOT).
 - `scripts/` — Verify-Gates (`verify_bootstrap.py`).
 - `tests/` — pytest-Suite (21 Testdateien).
-- `docs/` — Architektur-Docs + ADRs.
+- `docs/` — Architektur-Docs + ADRs + `docs/umsetzungsplan/` (Plan + Fortschritts-Log).
 - `archive/decision_gate_cascade/` — eingefrorene Decision-Tripwires (siehe §5).
 
 ## 3. Verifikation
@@ -43,12 +44,25 @@ Die frühere rekursive Precondition-Kaskade (77 Check-Skripte + 76 Tests) ist ei
 | (Härtung) | pytest-timeout-Netz; `StaticPool`+`check_same_thread` für In-Memory-aiosqlite via `make_async_engine`; `asyncio_default_fixture_loop_scope="function"`. |
 | `8160938` | Decision-Gate-Kaskade eingefroren (Archiv + verify-Pruning + ADR-0001). |
 | `f10a027` | 109 tote `REQUIRED_FILES`/`REFERENCE_FILES`-Einträge entfernt; `make verify` wieder grün. |
+| `4518896` | Lebendes `SYSTEM_STATE.md` angelegt (W0-03). |
+| `085e03b` | Kosmetisches Cleanup (verify-`print` gekürzt) — W0 versiegelt. |
+
+## 6b. W1 — CI-Pipeline (Changelog)
+| Schritt | Inhalt |
+|---|---|
+| W1a | `[project.dependencies]` (13 Runtime, exakt gepinnt) + `dev` (5 Tools) in `pyproject.toml`. |
+| W1a-fix | `[build-system]` + `[tool.setuptools] py-modules = []` → reproduzierbarer deps-only `pip install -e ".[dev]"` trotz Flat-Layout. **Verifiziert:** Frisch-venv install + `pytest` 121 passed + `mypy` sauber + `make verify` grün. |
+| W1b | `.github/workflows/ci.yml` — offen. |
 
 ## 7. Bekannte Restschuld (nicht blockierend)
-- Aktuell keine offene Restschuld. (Stale verify-`print` im W0-Cleanup bereinigt; `AGENTS.md` enthaelt keine veralteten Statusverweise.)
+- **S-01:** Root `package.json` ohne Node-Deps; `apps/web-astro` nicht baubar → W1c/W4.
+- **S-02:** ~100 tote `check:*decision*`-npm-Scripts in `package.json` → Cleanup W1b/W1c.
+- **S-03:** `make verify` führt ruff/mypy/typecheck noch nicht real aus (nur Bootstrap) → Gates via CI (W1b).
+- Details/Tracking: `docs/umsetzungsplan/05_FORTSCHRITT_LOG.md` (Abschnitt „Bekannte Schuld").
 
 ## 8. Nächste Schritte
-- W0 abschließen, dann Folge-Wellen gemäß `/opt/radiquant4/docs/restart-radiquant-v5/08_OPTIMAL_REBUILD_SEQUENCE.md`.
+- **W1b:** `.github/workflows/ci.yml` (pytest + mypy + `make verify` blockierend; ruff informativ; secret-scan). Dann W2 (Radi144 echtes E2E).
+- Verbindlicher Plan + jeweils aktueller Status: `docs/umsetzungsplan/05_FORTSCHRITT_LOG.md`.
 
 ---
-*Stand: 2026-05-29. Bei jeder substanziellen Änderung aktualisieren.*
+*Stand: 2026-05-30. Bei jeder substanziellen Änderung aktualisieren.*
