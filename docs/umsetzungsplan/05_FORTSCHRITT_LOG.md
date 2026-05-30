@@ -65,12 +65,16 @@
 
 | Ticket | Inhalt | Status |
 |---|---|---|
-| W2a | Migration `0008_module_projections` (up/down) + ORM `ModuleProjection` (`module_projections`, `UNIQUE(tenant_id, module_run_id, role)`) | ⏳ |
+| W2a | Migration `0008_module_projections` (up/down) + ORM `ModuleProjection` (`module_projections`, `UNIQUE(tenant_id, module_run_id, role)`) | ✅ (120 passed, mypy sauber, verify grün) |
 | W2b | Projection-Materialisierungs-Service: aus `ModuleResult` via `Radi144ProjectionBuilder` Client+Therapist materialisieren, idempotent, tenant-scoped | ⏳ |
 | W2c | Worker-Verdrahtung: nach Result-Write → Projektion materialisieren (CPU-Worker-Pfad) | ⏳ |
 | W2d | Funktionstests (echtes Verhalten: materialisiert/lesbar/tenant-isoliert/idempotent) + API-Lesepfad auf materialisierte Projektion | ⏳ |
 
 **Design-Leitplanke:** `ModuleResult`-CHECK nagelt `projection_status='pending_projection_builder'` fest → Materialisierung wird **nicht** über das alte Feld, sondern über die neue Tabelle `module_projections` abgebildet (minimal-invasiv, keine SQLite-CHECK-Alter-Komplexität). Idempotenz via `UNIQUE(tenant_id, module_run_id, role)`.
+
+**W2a-Cleanup (Cascade, ADR-0002):** Der Frozen-Era-Gate `check_radi144_projection_gate_ergonomics` erzwang aktiv die Abwesenheit von `module_projections`/`ModuleProjection` und kollidierte direkt mit ADR-0002. Nach ADR-0001-Muster retiriert: Validator + Test nach `archive/decision_gate_cascade/` verschoben, aus `verify_bootstrap.py` (Aufruf + 2 REQUIRED_FILES-Einträge) gelöst, verify-Abschlussmeldung ADR-0002-konform aktualisiert.
+
+**Governance-Schuld G-01 (entdeckt):** `scripts/validate_contracts.py` enthält eine große, nicht archivierte Radi144-Decision-Kaskade (~Z. 2000–2142), die per `project.yml`-Anker erzwingt, dass Result-Persistence/Projection-Builder/Materialisierung/GPU „disabled/absent" bleiben. Aktuell **grün** (prüft nur Anker, nicht Code), wird aber spätestens in W2c (Runtime-Verdrahtung) kollidieren. Muss dann unter ADR-0002 (ggf. Scope-Erweiterung) governiert bereinigt werden — **nicht** ad hoc.
 
 **Deklarierte Runtime-Deps (exakt gepinnt, = installierte Baseline):**
 `fastapi==0.128.0`, `uvicorn==0.40.0`, `pydantic==2.12.5`, `pydantic-settings==2.12.0`, `sqlalchemy==2.0.45`, `greenlet==3.3.0`, `alembic==1.17.2`, `asyncpg==0.31.0`, `aiosqlite==0.22.1`, `pyjwt==2.6.0`, `python-multipart==0.0.21`, `email-validator==2.3.0`, `httpx==0.28.1`.
@@ -110,3 +114,4 @@ make verify                  # alle aktiven Gates grün
 | 2026-05-30 | W1b: `.github/workflows/ci.yml` angelegt (backend blockierend, lint informativ, secret-scan); lokal validiert (YAML, cci-frei, Gate-Befehle grün). Live-CI-Lauf erfolgt beim ersten Push nach GitHub. |
 | 2026-05-30 | Repo nach `github.com/radiquant/radiquant-v5` gepusht. Hinweis: Workflow-Push via Git scheiterte an Org-OAuth/PAT-Policy → `ci.yml` per Web-UI angelegt/verschoben (`.github/workflows/ci.yml`, Commit `2566c57`). GitHub-Actions-**Runs** sind durch ein **Org-Billing-Problem** blockiert (extern, kein Code-Defekt) — Config korrekt, läuft nach Billing-Fix per Re-run. Lokale Gates bleiben maßgeblich. |
 | 2026-05-30 | W2 gestartet: **ADR-0002** akzeptiert (eng begrenzter Unfreeze der materialisierten Radi144-Projektionsspeicherung). Nächster Schritt W2a (Migration 0008 + `ModuleProjection`-ORM). |
+| 2026-05-30 | **W2a ✅** (Codex): ORM `ModuleProjection` + Migration `0008_module_projections` (up/down) + Export. Cascade-Cleanup: obsoleten `projection_gate_ergonomics`-Gate retiriert (→ archive). Verifikation: **120 passed**, mypy sauber, `make verify` grün. Governance-Schuld **G-01** (validate_contracts.py Radi144-Kaskade) erfasst. Kein Push (Workflow-frei; via origin nach Bedarf). |

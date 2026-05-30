@@ -2,7 +2,7 @@
 
 from app.models.audit import AuditLog
 from app.models.client import ClientConsent, ClientProfile
-from app.models.engine import ModuleProvenance, ModuleResult, ModuleRun
+from app.models.engine import ModuleProjection, ModuleProvenance, ModuleResult, ModuleRun
 from app.models.event import EventRecord
 from app.models.identity import Role, Tenant, User
 from app.models.session import ClientSession, SessionGoal
@@ -14,6 +14,7 @@ __all__ = [
     "ClientProfile",
     "ClientSession",
     "EventRecord",
+    "ModuleProjection",
     "ModuleProvenance",
     "ModuleResult",
     "ModuleRun",

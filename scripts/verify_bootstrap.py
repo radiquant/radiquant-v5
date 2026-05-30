@@ -230,7 +230,6 @@ REQUIRED_FILES = [
     "scripts/check_radi144_worker_cpu_execution_wiring.py",
     "scripts/check_radi144_worker_progress_event_gate.py",
     "scripts/check_radi144_jobtracker_event_binding.py",
-    "scripts/check_radi144_projection_gate_ergonomics.py",
     "scripts/check_runtime_routes.py",
     "scripts/check_openapi_runtime.py",
     "scripts/export_openapi.py",
@@ -395,7 +394,6 @@ REQUIRED_FILES = [
     "tests/test_radi144_api_projection_read.py",
     "tests/test_radi144_worker_job_gate.py",
     "tests/test_radi144_worker_runtime_gate.py",
-    "tests/test_radi144_projection_gate_ergonomics.py",
     "tests/test_radi144_cpu_safe_execution.py",
     "tests/test_radi144_worker_cpu_execution_wiring.py",
     "scripts/check_frontend_shell.py",
@@ -644,9 +642,6 @@ def main() -> int:
 
 
 
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_radi144_projection_gate_ergonomics.py")], check=True)
-    ok("Radi144 projection gate ergonomics validate")
-
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_runtime_routes.py")], check=True)
     ok("runtime routes match security manifest")
 
@@ -665,10 +660,11 @@ def main() -> int:
     print(
         "\nBootstrap verification complete. All active gates passed. "
         "Decision-gate cascade is frozen "
-        "(see docs/architecture/adr/ADR-0001-decision-gate-cascade-frozen.md); "
-        "Radi144 GPU/CUDA, API-triggered execution, external queue/daemon execution, "
-        "materialized projection storage and related implementation remain blocked "
-        "until their gates explicitly open them.\n"
+        "(see docs/architecture/adr/ADR-0001-decision-gate-cascade-frozen.md). "
+        "Radi144 materialized projection storage is authorized under "
+        "docs/architecture/adr/ADR-0002-radi144-materialized-projection-storage.md; "
+        "Radi144 GPU/CUDA, API-triggered execution and external queue/daemon execution "
+        "remain blocked until their gates explicitly open them.\n"
     )
     return 0
 

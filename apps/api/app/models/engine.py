@@ -109,3 +109,27 @@ class ModuleProvenance(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         CheckConstraint("duration_ms >= 0", name="module_provenances_duration_non_negative"),
         Index("ix_module_provenances_tenant_run", "tenant_id", "module_run_id"),
     )
+
+
+class ModuleProjection(UUIDPrimaryKeyMixin, TimestampMixin, Base):
+    """Tenant-scoped materialized Radi144 role projection (ADR-0002)."""
+
+    __tablename__ = "module_projections"
+
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("tenants.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
+    module_run_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("module_runs.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    role: Mapped[str] = mapped_column(String(20), nullable=False)
+    projection_kind: Mapped[str] = mapped_column(String(40), nullable=False)
+    projection_json: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    raw_debug_excluded: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+
+    __table_args__ = (
+        CheckConstraint("role in ('client', 'therapist')", name="module_projections_role_allowed"),
+        CheckConstraint("raw_debug_excluded = true", name="module_projections_raw_debug_excluded"),
+        UniqueConstraint("tenant_id", "module_run_id", "role", name="uq_module_projections_tenant_run_role"),
+        Index("ix_module_projections_tenant_run", "tenant_id", "module_run_id"),
+    )
