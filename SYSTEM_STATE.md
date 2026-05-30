@@ -52,7 +52,8 @@ Die frühere rekursive Precondition-Kaskade (77 Check-Skripte + 76 Tests) ist ei
 |---|---|
 | W1a | `[project.dependencies]` (13 Runtime, exakt gepinnt) + `dev` (5 Tools) in `pyproject.toml`. |
 | W1a-fix | `[build-system]` + `[tool.setuptools] py-modules = []` → reproduzierbarer deps-only `pip install -e ".[dev]"` trotz Flat-Layout. **Verifiziert:** Frisch-venv install + `pytest` 121 passed + `mypy` sauber + `make verify` grün. |
-| W1b | `.github/workflows/ci.yml` — offen. |
+| W1b | `.github/workflows/ci.yml`: `backend` (pytest+mypy+`make verify`, blockierend), `lint` (ruff, informativ), `secret-scan` (gitleaks). Lokal validiert; Live-Lauf beim ersten Push. |
+| W1c | Node/Frontend-Deps + Frontend-Typecheck-Gate — offen (Schuld S-01). |
 
 ## 7. Bekannte Restschuld (nicht blockierend)
 - **S-01:** Root `package.json` ohne Node-Deps; `apps/web-astro` nicht baubar → W1c/W4.
@@ -61,7 +62,8 @@ Die frühere rekursive Precondition-Kaskade (77 Check-Skripte + 76 Tests) ist ei
 - Details/Tracking: `docs/umsetzungsplan/05_FORTSCHRITT_LOG.md` (Abschnitt „Bekannte Schuld").
 
 ## 8. Nächste Schritte
-- **W1b:** `.github/workflows/ci.yml` (pytest + mypy + `make verify` blockierend; ruff informativ; secret-scan). Dann W2 (Radi144 echtes E2E).
+- **Optional W1c:** Node/Frontend-Deps deklarieren + Frontend-Typecheck-Gate (sobald `apps/web-astro` baubar).
+- **W2:** Radi144 vertikaler Nutzwert (echtes E2E) — Migration `0008_module_projections`, ORM, Projection-Write-Service, Worker-Materialisierung, Funktionstests.
 - Verbindlicher Plan + jeweils aktueller Status: `docs/umsetzungsplan/05_FORTSCHRITT_LOG.md`.
 
 ---

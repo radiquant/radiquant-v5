@@ -13,7 +13,7 @@
 | Welle | Inhalt | Status | Belegt durch |
 |---|---|---|---|
 | **W0** | Stabilisierung & Git-Baseline | ✅ | Commits `cfb7156`→`085e03b` |
-| **W1** | CI-Pipeline (PR-Gates) | 🔄 | W1a/W1a-fix ✅, W1b ⏳ |
+| **W1** | CI-Pipeline (PR-Gates) | 🔄 | W1a/W1a-fix/W1b ✅, W1c ⏳ |
 | **W2** | Radi144 vertikaler Nutzwert (echtes E2E) | ⏳ | — |
 | **W3** | Realtime & Result-Projektionen | ⏳ | — |
 | **W4** | Frontend-Test-Harness + MVP-Demo | ⏳ | — |
@@ -54,7 +54,7 @@
 |---|---|---|---|
 | W1a | `[project.dependencies]` (13 Runtime, exakt gepinnt) + `dev` (5 Tools) in `pyproject.toml` | ✅ verifiziert | siehe Verifikation unten |
 | W1a-fix | `[build-system]` + `[tool.setuptools] py-modules = []` → deps-only Editable-Install trotz Flat-Layout (apps/infra/archive/packages) | ✅ verifiziert | siehe Verifikation unten |
-| W1b | `.github/workflows/ci.yml`: pytest + mypy + `make verify` (blockierend), ruff (informativ), secret-scan (gitleaks-Action) | ⏳ | — |
+| W1b | `.github/workflows/ci.yml`: pytest + mypy + `make verify` (blockierend), ruff (informativ), secret-scan (gitleaks-Action) | ✅ lokal validiert | YAML gültig, keine cci-Links, Gate-Befehle grün; Live-Lauf bei Push |
 | W1c | Node/Frontend-Deps deklarieren + Frontend-Typecheck-Gate (verschoben, siehe Schuld) | ⏳ | — |
 
 **Deklarierte Runtime-Deps (exakt gepinnt, = installierte Baseline):**
@@ -92,3 +92,4 @@ make verify                  # alle aktiven Gates grün
 | Datum | Eintrag |
 |---|---|
 | 2026-05-30 | Log angelegt; W0 als versiegelt dokumentiert; W1a/W1a-fix verifiziert (121 passed, mypy sauber, make verify grün); W1b/W1c/Schuld erfasst. |
+| 2026-05-30 | W1b: `.github/workflows/ci.yml` angelegt (backend blockierend, lint informativ, secret-scan); lokal validiert (YAML, cci-frei, Gate-Befehle grün). Live-CI-Lauf erfolgt beim ersten Push nach GitHub. |
