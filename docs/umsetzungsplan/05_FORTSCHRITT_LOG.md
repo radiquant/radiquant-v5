@@ -13,8 +13,8 @@
 | Welle | Inhalt | Status | Belegt durch |
 |---|---|---|---|
 | **W0** | Stabilisierung & Git-Baseline | ✅ | Commits `cfb7156`→`085e03b` |
-| **W1** | CI-Pipeline (PR-Gates) | 🔄 | W1a/W1a-fix/W1b ✅, W1c ⏳ |
-| **W2** | Radi144 vertikaler Nutzwert (echtes E2E) | ⏳ | — |
+| **W1** | CI-Pipeline (PR-Gates) | ✅ (Config) | W1a/W1a-fix/W1b ✅; auf GitHub aktiv, Runs durch Org-Billing blockiert (extern) |
+| **W2** | Radi144 vertikaler Nutzwert (echtes E2E) | 🔄 | ADR-0002 akzeptiert; W2a ⏳ |
 | **W3** | Realtime & Result-Projektionen | ⏳ | — |
 | **W4** | Frontend-Test-Harness + MVP-Demo | ⏳ | — |
 | **W5** | Minimal Admin/Ops | ⏳ | — |
@@ -57,6 +57,21 @@
 | W1b | `.github/workflows/ci.yml`: pytest + mypy + `make verify` (blockierend), ruff (informativ), secret-scan (gitleaks-Action) | ✅ lokal validiert | YAML gültig, keine cci-Links, Gate-Befehle grün; Live-Lauf bei Push |
 | W1c | Node/Frontend-Deps deklarieren + Frontend-Typecheck-Gate (verschoben, siehe Schuld) | ⏳ | — |
 
+**Offener externer Punkt (kein Code):** GitHub-Actions-Runs der Org `radiquant` sind durch Billing/Spending-Limit gesperrt („job was not started … payments have failed“). Fix: Org → Billing & plans (Zahlungsmethode/Limit) **oder** Repo public (unbegrenzte Free-Minuten). Danach `Re-run jobs` auf `2566c57`. Workflow-Datei-Änderungen müssen bis zur PAT/OAuth-Policy-Freigabe über die Web-UI erfolgen.
+
+## W2 — Radi144 echtes E2E (via ADR-0002) 🔄
+
+**Governance:** `docs/architecture/adr/ADR-0002-radi144-materialized-projection-storage.md` — einmaliger, eng begrenzter Unfreeze der materialisierten Projektionsspeicherung. Frozen bleiben: rekursive Decision-Kaskade, GPU/CUDA, API-getriggerte Ausführung, externe Queue/Daemon.
+
+| Ticket | Inhalt | Status |
+|---|---|---|
+| W2a | Migration `0008_module_projections` (up/down) + ORM `ModuleProjection` (`module_projections`, `UNIQUE(tenant_id, module_run_id, role)`) | ⏳ |
+| W2b | Projection-Materialisierungs-Service: aus `ModuleResult` via `Radi144ProjectionBuilder` Client+Therapist materialisieren, idempotent, tenant-scoped | ⏳ |
+| W2c | Worker-Verdrahtung: nach Result-Write → Projektion materialisieren (CPU-Worker-Pfad) | ⏳ |
+| W2d | Funktionstests (echtes Verhalten: materialisiert/lesbar/tenant-isoliert/idempotent) + API-Lesepfad auf materialisierte Projektion | ⏳ |
+
+**Design-Leitplanke:** `ModuleResult`-CHECK nagelt `projection_status='pending_projection_builder'` fest → Materialisierung wird **nicht** über das alte Feld, sondern über die neue Tabelle `module_projections` abgebildet (minimal-invasiv, keine SQLite-CHECK-Alter-Komplexität). Idempotenz via `UNIQUE(tenant_id, module_run_id, role)`.
+
 **Deklarierte Runtime-Deps (exakt gepinnt, = installierte Baseline):**
 `fastapi==0.128.0`, `uvicorn==0.40.0`, `pydantic==2.12.5`, `pydantic-settings==2.12.0`, `sqlalchemy==2.0.45`, `greenlet==3.3.0`, `alembic==1.17.2`, `asyncpg==0.31.0`, `aiosqlite==0.22.1`, `pyjwt==2.6.0`, `python-multipart==0.0.21`, `email-validator==2.3.0`, `httpx==0.28.1`.
 **Dev-Deps:** `pytest==9.0.2`, `pytest-asyncio==1.3.0`, `pytest-timeout==2.4.0`, `ruff==0.14.10`, `mypy==1.19.1`.
@@ -93,3 +108,5 @@ make verify                  # alle aktiven Gates grün
 |---|---|
 | 2026-05-30 | Log angelegt; W0 als versiegelt dokumentiert; W1a/W1a-fix verifiziert (121 passed, mypy sauber, make verify grün); W1b/W1c/Schuld erfasst. |
 | 2026-05-30 | W1b: `.github/workflows/ci.yml` angelegt (backend blockierend, lint informativ, secret-scan); lokal validiert (YAML, cci-frei, Gate-Befehle grün). Live-CI-Lauf erfolgt beim ersten Push nach GitHub. |
+| 2026-05-30 | Repo nach `github.com/radiquant/radiquant-v5` gepusht. Hinweis: Workflow-Push via Git scheiterte an Org-OAuth/PAT-Policy → `ci.yml` per Web-UI angelegt/verschoben (`.github/workflows/ci.yml`, Commit `2566c57`). GitHub-Actions-**Runs** sind durch ein **Org-Billing-Problem** blockiert (extern, kein Code-Defekt) — Config korrekt, läuft nach Billing-Fix per Re-run. Lokale Gates bleiben maßgeblich. |
+| 2026-05-30 | W2 gestartet: **ADR-0002** akzeptiert (eng begrenzter Unfreeze der materialisierten Radi144-Projektionsspeicherung). Nächster Schritt W2a (Migration 0008 + `ModuleProjection`-ORM). |
