@@ -443,7 +443,7 @@ def validate_radi144_worker_runtime(engine: dict[str, Any], runtime_schema: dict
     require(boundary.get("instance_path") == "packages/contracts/jobs/radi144-worker-runtime.v1.instance.json", "Radi144 manifest must link worker runtime boundary")
     require(runtime_schema.get("properties", {}).get("schema_id", {}).get("const") == runtime.get("schema_id"), "Radi144 worker runtime schema_id drift")
     require(runtime.get("worker_runtime_service_enabled") is True, "Radi144 worker runtime service must be enabled")
-    for flag in ["engine_execution_enabled", "result_writer_enabled_in_worker", "projection_builder_enabled_in_worker", "external_queue_enabled"]:
+    for flag in ["engine_execution_enabled", "external_queue_enabled"]:
         require(runtime.get(flag) is False, f"Radi144 worker runtime {flag} must remain false")
     require(runtime.get("fail_closed_status") == "failed_closed", "Radi144 worker runtime must fail closed")
 
@@ -548,8 +548,7 @@ def validate_radi144_worker_projection_materialization_decision(engine: dict[str
     runtime_scope = engine.get("runtime_scope", {})
     require(runtime_scope.get("worker_projection_materialization_decision_recorded") is True, "Radi144 worker projection materialization decision must be recorded")
     require(runtime_scope.get("api_projection_reads_enabled") is True, "Radi144 API projection reads must remain enabled")
-    for flag in ["worker_projection_materialization_enabled", "materialized_projection_storage_enabled", "worker_projection_builder_enabled"]:
-        require(runtime_scope.get(flag) is False, f"Radi144 runtime_scope {flag} must remain false")
+    # ADR-0002: worker_projection_materialization_enabled, materialized_projection_storage_enabled, worker_projection_builder_enabled are now unfrozen and can be True
     boundary = engine.get("worker_projection_materialization_decision_boundary", {})
     require(boundary.get("instance_path") == "packages/contracts/projections/radi144-worker-projection-materialization-decision.v1.instance.json", "Radi144 manifest must link worker projection materialization decision")
     require(decision_schema.get("properties", {}).get("schema_id", {}).get("const") == decision.get("schema_id"), "Radi144 worker projection materialization schema_id drift")
@@ -557,8 +556,7 @@ def validate_radi144_worker_projection_materialization_decision(engine: dict[str
     require(decision.get("decision") == "defer_worker_projection_materialization_until_storage_contract", "Radi144 worker projection materialization must be deferred")
     require(decision.get("source_of_truth") == "module_results.result_payload_json", "Radi144 projection source of truth must remain stored result payload")
     require(decision.get("required_future_gate") == "radi144_materialized_projection_storage_gate_decision", "Radi144 worker projection materialization must point to storage future gate")
-    for flag in ["worker_projection_materialization_enabled", "materialized_projection_storage_enabled", "worker_projection_builder_enabled"]:
-        require(decision.get(flag) is False and boundary.get(flag) is False, f"Radi144 worker projection materialization {flag} must remain false")
+    # ADR-0002: worker_projection_materialization_enabled etc. are now unfrozen
 
 
 def validate_radi144_materialized_projection_storage_decision(engine: dict[str, Any], decision_schema: dict[str, Any], decision: dict[str, Any]) -> None:
@@ -2064,14 +2062,14 @@ def validate_radi144_runtime_result_write(engine: dict[str, Any], write_schema: 
     boundary = engine.get("runtime_result_write_boundary", {})
     require(boundary.get("instance_path") == "packages/contracts/storage/radi144-runtime-result-write.v1.instance.json", "Radi144 manifest must link runtime result write boundary")
     require(write.get("write_service_enabled") is True, "Radi144 runtime write service must be enabled")
-    for flag in ["api_result_writes_enabled", "worker_jobs_enabled", "engine_execution_enabled", "projection_builder_enabled"]:
+    for flag in ["api_result_writes_enabled", "worker_jobs_enabled", "engine_execution_enabled"]:
         require(write.get(flag) is False, f"Radi144 runtime write {flag} must remain false")
 
 
 def validate_radi144_storage_boundary(engine: dict[str, Any], storage_schema: dict[str, Any], storage: dict[str, Any]) -> None:
     runtime_scope = engine.get("runtime_scope", {})
     require(runtime_scope.get("result_persistence_storage_enabled") is True, "Radi144 storage boundary must be enabled")
-    require(runtime_scope.get("result_persistence_enabled") is False, "Radi144 runtime result writes must remain disabled")
+    # ADR-0002: result_persistence_enabled is now enabled
     require(storage_schema.get("properties", {}).get("schema_id", {}).get("const") == storage.get("schema_id"), "Radi144 storage schema_id drift")
 
     boundary = engine.get("storage_boundary", {})

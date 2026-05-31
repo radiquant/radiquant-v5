@@ -11,15 +11,20 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from app.db.session import get_db_session
-from app.models.engine import ModuleRun
-from app.schemas.radi144_api import Radi144JobCreateRequest, Radi144JobRecordStatus, Radi144RuntimeRouteStatusResponse
-from app.schemas.radi144_result import Radi144Result
+from app.models.engine import ModuleProjection
+from app.schemas.radi144_api import (
+    Radi144JobCreateRequest,
+    Radi144JobRecordStatus,
+    Radi144RuntimeRouteStatusResponse,
+)
 from app.security.tenant_guard import TenantContext, require_tenant_context
 from app.services.radi144.job_records import Radi144JobRecordError, Radi144JobRecordService
-from app.services.radi144.projection_builder import Radi144ClientProjection, Radi144ProjectionBuilder, Radi144ProjectionRole, Radi144TherapistProjection
+from app.services.radi144.projection_builder import (
+    Radi144ClientProjection,
+    Radi144TherapistProjection,
+)
 
 router = APIRouter(prefix="/engines/radi144", tags=["radi144"])
 
@@ -96,12 +101,15 @@ async def get_radi144_projected_result(
     role: Annotated[str, Query(pattern="^(client|therapist)$")] = "client",
 ) -> Radi144ClientProjection | Radi144TherapistProjection:
     """Read a stored Radi144 result only through the role-safe projection builder."""
-    module_run = await session.scalar(
-        select(ModuleRun)
-        .options(selectinload(ModuleRun.result))
-        .where(ModuleRun.id == job_id, ModuleRun.tenant_id == context.tenant_id, ModuleRun.module_id == "radi144")
+    projection = await session.scalar(
+        select(ModuleProjection).where(
+            ModuleProjection.module_run_id == job_id,
+            ModuleProjection.tenant_id == context.tenant_id,
+            ModuleProjection.role == role,
+        )
     )
-    if module_run is None or module_run.result is None:
+    if projection is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Radi144 result not found")
-    result = Radi144Result.model_validate(module_run.result.result_payload_json)
-    return Radi144ProjectionBuilder().build_projection(result=result, role=cast(Radi144ProjectionRole, role))
+    if role == "client":
+        return Radi144ClientProjection.model_validate(projection.projection_json)
+    return Radi144TherapistProjection.model_validate(projection.projection_json)

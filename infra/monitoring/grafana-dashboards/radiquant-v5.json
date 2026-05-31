@@ -1,0 +1,67 @@
+{
+  "title": "radiquant-v5",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "title": "HTTP Request Rate",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[5m])"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "HTTP Latenz P95",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, http_request_duration_seconds_bucket)"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Radi144 Job Status",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "radi144_jobs_total"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Event Throughput",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(event_records_appended_total[5m])"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "SSE Streams",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sse_stream_requests_total"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "DB Latenz",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "db_query_duration_seconds"
+        }
+      ]
+    }
+  ]
+}

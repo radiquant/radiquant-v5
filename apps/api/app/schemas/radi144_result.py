@@ -4,10 +4,10 @@ These Pydantic models mirror the committed Radi144 result contract. They do not
 persist results, expose API routes, or build client projections in this gate.
 """
 
+from typing import Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Literal
 
 ComputeBackend = Literal["cpu", "cuda", "simulation_disabled_until_engine_gate"]
 

@@ -9,7 +9,16 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from sqlalchemy import Boolean, CheckConstraint, ForeignKey, Index, Integer, JSON, String, UniqueConstraint
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    CheckConstraint,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import Uuid
 
@@ -40,8 +49,8 @@ class ModuleRun(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     schema_id: Mapped[str] = mapped_column(String(120), nullable=False)
     job_contract_schema_id: Mapped[str] = mapped_column(String(120), nullable=False)
 
-    result: Mapped["ModuleResult | None"] = relationship(back_populates="module_run", cascade="all, delete-orphan")
-    provenance: Mapped["ModuleProvenance | None"] = relationship(back_populates="module_run", cascade="all, delete-orphan")
+    result: Mapped[ModuleResult | None] = relationship(back_populates="module_run", cascade="all, delete-orphan")
+    provenance: Mapped[ModuleProvenance | None] = relationship(back_populates="module_run", cascade="all, delete-orphan")
 
     __table_args__ = (
         CheckConstraint("length(module_id) >= 1", name="module_runs_module_id_min_length"),

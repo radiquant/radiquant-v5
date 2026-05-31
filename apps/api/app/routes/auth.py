@@ -18,7 +18,7 @@ from app.schemas.auth import LoginRequest, LogoutResponse, TokenResponse
 from app.security.passwords import PasswordHashError, verify_password
 from app.security.tenant_guard import require_authenticated_principal
 from app.services.audit import AuditService
-from app.services.auth import AuthService, AuthenticatedPrincipal, get_auth_service
+from app.services.auth import AuthenticatedPrincipal, AuthService, get_auth_service
 
 router = APIRouter(prefix="/auth", tags=["identity"])
 

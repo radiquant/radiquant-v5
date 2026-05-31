@@ -1,0 +1,27 @@
+{
+  "name": "@radiquant-v5/web-astro",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "test": "vitest run",
+    "test:a11y": "playwright test tests/a11y",
+    "codegen:api": "openapi-typescript ../../apps/api/openapi.json -o src/lib/api/schema.gen.ts",
+    "codegen:api:check": "npm run codegen:api && git diff --exit-code src/lib/api/schema.gen.ts",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@astrojs/react": "^5.0.0",
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^6.0.2",
+    "astro": "^6.0.5",
+    "jsdom": "^29.1.1",
+    "openapi-typescript": "^7.13.0",
+    "vitest": "^4.1.7"
+  }
+}

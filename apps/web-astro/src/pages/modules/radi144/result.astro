@@ -1,0 +1,10 @@
+---
+import { Radi144ResultIsland } from '../../../components/Radi144ResultIsland';
+import BaseLayout from '../../../layouts/AppShell.astro';
+
+const session_id = Astro.url.searchParams.get('session_id') ?? '';
+---
+
+<BaseLayout title="Radi144 Analyse Ergebnis" description="Radi144 Ergebnisansicht für Radiquant v5">
+  <Radi144ResultIsland client:load session_id={session_id} />
+</BaseLayout>

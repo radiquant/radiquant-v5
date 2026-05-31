@@ -29,6 +29,15 @@ FORBIDDEN_PAYLOAD_KEYS = {
     "password",
 }
 
+CLIENT_HIDDEN_PAYLOAD_KEYS = {
+    "compute_backend",
+    "module_run_id",
+    "gpu_cuda_execution_enabled",
+    "cpu_execution_enabled",
+    "worker_outcome",
+    "projection_written",
+}
+
 
 class EventSchemaError(Exception):
     """Raised when an event envelope violates the committed event contract."""
@@ -59,6 +68,12 @@ def _contains_forbidden_key(value: Any) -> str | None:
             if found is not None:
                 return found
     return None
+
+
+def project_payload_for_role(payload: dict[str, Any], role: str) -> dict[str, Any]:
+    if role == "client":
+        return {k: v for k, v in payload.items() if k not in CLIENT_HIDDEN_PAYLOAD_KEYS}
+    return payload
 
 
 class EventRegistryService:

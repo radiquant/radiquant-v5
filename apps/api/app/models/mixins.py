@@ -1,6 +1,6 @@
 """Common ORM mixins."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from sqlalchemy import DateTime
@@ -10,7 +10,7 @@ from sqlalchemy.types import Uuid
 
 def utc_now() -> datetime:
     """Return timezone-aware UTC timestamp."""
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class UUIDPrimaryKeyMixin:

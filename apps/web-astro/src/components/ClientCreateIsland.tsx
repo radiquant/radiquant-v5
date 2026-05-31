@@ -1,4 +1,5 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 
 import { createClient } from '../lib/api/client';
 import type { ClientProfileResponse } from '../lib/api/types';

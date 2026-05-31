@@ -10,6 +10,7 @@ Lückenloser, agentenzugeordneter Umsetzungsplan für den optimalen, contract-fi
 4. **[Codex CLI]** `03_CODEX_CLI_INTEGRATION.md` — konkrete Einrichtung, Ticket-Vorlage, Arbeitszyklus
 5. **[Innovationen]** `04_INNOVATIONEN.md` — I-01…I-15, feature-flagged
 6. **[Fortschritts-Log]** `05_FORTSCHRITT_LOG.md` — **lebendes Status-Log**: jeder Schritt/Ticket mit Status, Commit, Verifikationsbeleg
+7. **[Vollplan W3–W9]** `06_VOLLPLAN_W3_W9_DETAILLIERT.md` — **maximale Detaillierung**: G-01 + W3–W9 mit Agent, Scope, Codex-Prompts, Akzeptanzkriterien, Verifikation
 
 ## Aktueller Stand
 

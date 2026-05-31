@@ -14,7 +14,7 @@
 |---|---|---|---|
 | **W0** | Stabilisierung & Git-Baseline | ✅ | Commits `cfb7156`→`085e03b` |
 | **W1** | CI-Pipeline (PR-Gates) | ✅ (Config) | W1a/W1a-fix/W1b ✅; auf GitHub aktiv, Runs durch Org-Billing blockiert (extern) |
-| **W2** | Radi144 vertikaler Nutzwert (echtes E2E) | 🔄 | ADR-0002 akzeptiert; W2a ⏳ |
+| **W2** | Radi144 vertikaler Nutzwert (echtes E2E) | ✅ | W2a–W2d verifiziert; alle Tests grün |
 | **W3** | Realtime & Result-Projektionen | ⏳ | — |
 | **W4** | Frontend-Test-Harness + MVP-Demo | ⏳ | — |
 | **W5** | Minimal Admin/Ops | ⏳ | — |
@@ -66,9 +66,9 @@
 | Ticket | Inhalt | Status |
 |---|---|---|
 | W2a | Migration `0008_module_projections` (up/down) + ORM `ModuleProjection` (`module_projections`, `UNIQUE(tenant_id, module_run_id, role)`) | ✅ (120 passed, mypy sauber, verify grün) |
-| W2b | Projection-Materialisierungs-Service: aus `ModuleResult` via `Radi144ProjectionBuilder` Client+Therapist materialisieren, idempotent, tenant-scoped | ⏳ |
-| W2c | Worker-Verdrahtung: nach Result-Write → Projektion materialisieren (CPU-Worker-Pfad) | ⏳ |
-| W2d | Funktionstests (echtes Verhalten: materialisiert/lesbar/tenant-isoliert/idempotent) + API-Lesepfad auf materialisierte Projektion | ⏳ |
+| W2b | Projection-Materialisierungs-Service: aus `ModuleResult` via `Radi144ProjectionBuilder` Client+Therapist materialisieren, idempotent, tenant-scoped | ✅ (4 passed) |
+| W2c | Worker-Verdrahtung: nach Result-Write → Projektion materialisieren (CPU-Worker-Pfad) | ✅ (2 neue Tests; alle bestehenden weiter grün) |
+| W2d | API-Lesepfad auf materialisierte Projektion (`GET /jobs/{id}/result` liest aus `module_projections`); Funktionstests gegen echten Store | ✅ (3 passed) |
 
 **Design-Leitplanke:** `ModuleResult`-CHECK nagelt `projection_status='pending_projection_builder'` fest → Materialisierung wird **nicht** über das alte Feld, sondern über die neue Tabelle `module_projections` abgebildet (minimal-invasiv, keine SQLite-CHECK-Alter-Komplexität). Idempotenz via `UNIQUE(tenant_id, module_run_id, role)`.
 
@@ -115,3 +115,6 @@ make verify                  # alle aktiven Gates grün
 | 2026-05-30 | Repo nach `github.com/radiquant/radiquant-v5` gepusht. Hinweis: Workflow-Push via Git scheiterte an Org-OAuth/PAT-Policy → `ci.yml` per Web-UI angelegt/verschoben (`.github/workflows/ci.yml`, Commit `2566c57`). GitHub-Actions-**Runs** sind durch ein **Org-Billing-Problem** blockiert (extern, kein Code-Defekt) — Config korrekt, läuft nach Billing-Fix per Re-run. Lokale Gates bleiben maßgeblich. |
 | 2026-05-30 | W2 gestartet: **ADR-0002** akzeptiert (eng begrenzter Unfreeze der materialisierten Radi144-Projektionsspeicherung). Nächster Schritt W2a (Migration 0008 + `ModuleProjection`-ORM). |
 | 2026-05-30 | **W2a ✅** (Codex): ORM `ModuleProjection` + Migration `0008_module_projections` (up/down) + Export. Cascade-Cleanup: obsoleten `projection_gate_ergonomics`-Gate retiriert (→ archive). Verifikation: **120 passed**, mypy sauber, `make verify` grün. Governance-Schuld **G-01** (validate_contracts.py Radi144-Kaskade) erfasst. Kein Push (Workflow-frei; via origin nach Bedarf). |
+| 2026-05-30 | **W2b ✅** (Codex): `ProjectionWriteService` + `ProjectionWriteError`/`ProjectionWriteResult` — idempotente Client+Therapist-Materialisierung in `module_projections`, tenant-scoped. Export in `radi144/__init__.py`. Verifikation: **4 passed** (`test_radi144_projection_write_service.py`), Vollregression grün. |
+| 2026-05-30 | **W2c ✅** (Codex): `Radi144WorkerRuntimeService` verdrahtet — nach `persist_result()` ruft Worker `persist_projection()` auf; neues `projection_written`-Feld im Outcome; `failed_closed_projection_write_rejected`-Pfad. Verifikation: **2 neue Tests** (`test_radi144_worker_projection_wiring.py`), alle bestehenden Worker-Tests unverändert grün. |
+| 2026-05-30 | **W2d ✅** (Codex + Cascade-Fix): `GET /engines/radi144/jobs/{id}/result` liest jetzt direkt aus `module_projections` statt on-the-fly via `ProjectionBuilder`. `_seed_result` in Test materialisiert via `ProjectionWriteService`. Cascade-Fix: `cast` aus `typing`-Import nach Codex-Cleanup-Fehler wiederhergestellt. Verifikation: **3 passed** (`test_radi144_api_projection_read.py`), **Vollregression grün**. **W2 vollständig abgeschlossen.** |

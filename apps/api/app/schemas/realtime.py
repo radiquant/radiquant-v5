@@ -10,6 +10,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
+EventReplayRole = Literal["client", "therapist", "admin"]
+
 
 class EventReplayItem(BaseModel):
     """Safe tenant-scoped event projection for replay/fallback polling."""
@@ -38,4 +40,5 @@ class EventReplayResponse(BaseModel):
     limit: int
     after_event_id: UUID | None
     next_cursor: UUID | None
+    has_more: bool = False
     connection_state: Literal["fallback"] = "fallback"

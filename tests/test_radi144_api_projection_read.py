@@ -29,6 +29,7 @@ from app.schemas.radi144_result import (
 from app.security.passwords import hash_password
 from app.services.auth import AuthService, get_auth_service
 from app.services.radi144 import Radi144ResultWriter
+from app.services.radi144.projection_write_service import ProjectionWriteService
 
 
 @pytest_asyncio.fixture
@@ -100,6 +101,7 @@ async def _seed_result(factory: async_sessionmaker[AsyncSession]) -> tuple[Tenan
             client_projection=Radi144ClientProjectionPlaceholder(summary_label="Projection pending", quality_label="wellbeing quality pending"),
         )
         await Radi144ResultWriter(session).persist_result(result=result, workflow_step_run_id=step.id)
+        await ProjectionWriteService(session).persist_projection(module_run_id=result.module_run_id, tenant_id=result.tenant_id)
         await session.commit()
         return tenant, user, result
 

@@ -1,0 +1,13 @@
+[Unit]
+Description=Radiquant v5 API
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+WorkingDirectory=/opt/radiquant-v5/apps/api
+ExecStart=uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

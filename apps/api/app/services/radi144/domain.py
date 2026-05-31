@@ -239,7 +239,7 @@ class Radi144DomainService:
         values: list[float] = []
         counter = 0
         while len(values) < self.vector_dimensions:
-            digest = sha256(f"radi144:{label}:{counter}".encode("utf-8")).digest()
+            digest = sha256(f"radi144:{label}:{counter}".encode()).digest()
             for byte in digest:
                 values.append((byte / 127.5) - 1.0)
                 if len(values) == self.vector_dimensions:

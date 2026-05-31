@@ -1,0 +1,10 @@
+slos:
+  - name: api_availability
+    target: 99.5
+    metric: up{job="radiquant-api"}
+  - name: p95_response_time_ms
+    target: 500
+    metric: histogram_quantile(0.95, http_request_duration_seconds_bucket)
+  - name: radi144_job_success_rate
+    target: 98.0
+    metric: radi144_jobs_total{status="completed"}

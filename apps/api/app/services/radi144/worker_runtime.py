@@ -23,7 +23,14 @@ from app.models.workflow import WorkflowRun
 from app.schemas.event import EventEnvelopeCreate
 from app.services.consent import ConsentRequiredError, ConsentService
 from app.services.event_registry import EventWriter
-from app.services.radi144.cpu_safe_execution import Radi144CpuSafeExecutionInput, Radi144CpuSafeExecutionService
+from app.services.radi144.cpu_safe_execution import (
+    Radi144CpuSafeExecutionInput,
+    Radi144CpuSafeExecutionService,
+)
+from app.services.radi144.projection_write_service import (
+    ProjectionWriteError,
+    ProjectionWriteService,
+)
 from app.services.radi144.result_writer import Radi144ResultWriteError, Radi144ResultWriter
 
 Radi144WorkerRuntimeStatus = Literal[
@@ -31,6 +38,7 @@ Radi144WorkerRuntimeStatus = Literal[
     "result_stored_cpu_safe",
     "failed_closed_consent_required",
     "failed_closed_result_write_rejected",
+    "failed_closed_projection_write_rejected",
     "failed_closed_invalid_job_context",
 ]
 Radi144WorkerRuntimeReason = Literal[
@@ -38,6 +46,7 @@ Radi144WorkerRuntimeReason = Literal[
     "cpu_safe_result_stored",
     "consent_required",
     "result_write_rejected",
+    "projection_write_rejected",
     "invalid_job_context",
 ]
 
@@ -53,6 +62,7 @@ class Radi144WorkerRuntimeOutcome:
     cpu_execution_enabled: bool = True
     gpu_cuda_execution_enabled: bool = False
     result_written: bool = False
+    projection_written: bool = False
 
 
 class Radi144WorkerRuntimeService:
@@ -153,6 +163,25 @@ class Radi144WorkerRuntimeService:
                 result_written=False,
             )
 
+        try:
+            await ProjectionWriteService(self.session).persist_projection(
+                module_run_id=module_run.id,
+                tenant_id=module_run.tenant_id,
+            )
+        except ProjectionWriteError:
+            module_run.status = "failed_closed"
+            await self._append_worker_event(module_run=module_run, event_type="module.radi144.failed", reason="projection_write_rejected")
+            await self._append_worker_event(module_run=module_run, event_type="job.failed", reason="projection_write_rejected")
+            await self.session.flush()
+            return Radi144WorkerRuntimeOutcome(
+                status="failed_closed_projection_write_rejected",
+                module_run_id=module_run.id,
+                tenant_id=module_run.tenant_id,
+                reason="projection_write_rejected",
+                result_written=True,
+                projection_written=False,
+            )
+
         await self._append_worker_event(module_run=module_run, event_type="module.radi144.completed", reason="cpu_safe_result_stored")
         await self._append_worker_event(module_run=module_run, event_type="job.done", reason="cpu_safe_result_stored")
         return Radi144WorkerRuntimeOutcome(
@@ -161,6 +190,7 @@ class Radi144WorkerRuntimeService:
             tenant_id=module_run.tenant_id,
             reason="cpu_safe_result_stored",
             result_written=True,
+            projection_written=True,
         )
 
     async def _append_worker_event(self, *, module_run: ModuleRun, event_type: str, reason: str) -> None:

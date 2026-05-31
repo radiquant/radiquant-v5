@@ -17,10 +17,17 @@ from app.db.session import get_db_session
 from app.models.audit import AuditAction
 from app.models.client import ClientProfile
 from app.models.session import ClientSession, SessionGoal, SessionStatus
-from app.schemas.session import SessionCreateRequest, SessionListResponse, SessionResponse, SessionStatusUpdateRequest
+from app.schemas.session import (
+    SessionCreateRequest,
+    SessionListResponse,
+    SessionResponse,
+    SessionStatusUpdateRequest,
+)
+from app.schemas.synergy import SynergyResult
 from app.security.tenant_guard import TenantContext, require_tenant_context
 from app.services.audit import AuditService
 from app.services.consent import ConsentRequiredError, ConsentService
+from app.services.synergy_service import SynergyService
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
 
@@ -159,3 +166,17 @@ async def update_session_status(
     )
     await session.commit()
     return await _get_session_or_404(session, context.tenant_id, client_session.id)
+
+
+@router.get("/{session_id}/synergy", operation_id="getSessionSynergy", response_model=SynergyResult)
+async def get_session_synergy(
+    session_id: UUID,
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    context: Annotated[TenantContext, Depends(require_tenant_context)],
+) -> SynergyResult:
+    """Return tenant-scoped cross-module session synthesis."""
+    return await SynergyService().compute(
+        session_id=session_id,
+        tenant_id=context.tenant_id,
+        db=session,
+    )

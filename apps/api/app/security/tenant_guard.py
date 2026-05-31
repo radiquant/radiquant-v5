@@ -6,7 +6,7 @@ from uuid import UUID
 
 from fastapi import Depends, Header, HTTPException, status
 
-from app.services.auth import AuthError, AuthService, AuthenticatedPrincipal, get_auth_service
+from app.services.auth import AuthenticatedPrincipal, AuthError, AuthService, get_auth_service
 
 
 @dataclass(frozen=True)
