@@ -9,6 +9,7 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql+asyncpg://radiquant:radiquant@db:5432/radiquant
+      ALEMBIC_DATABASE_URL: postgresql+psycopg2://radiquant:radiquant@db:5432/radiquant
       SECRET_KEY: change-me-in-production-minimum-32-characters
       ACCESS_TOKEN_TTL_MINUTES: "60"
     healthcheck:

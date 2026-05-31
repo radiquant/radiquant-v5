@@ -26,10 +26,8 @@ target_metadata = Base.metadata
 
 
 def get_url() -> str:
-    return os.getenv(
-        "DATABASE_URL",
-        config.get_main_option("sqlalchemy.url"),
-    )
+    url = os.getenv("ALEMBIC_DATABASE_URL") or os.getenv("DATABASE_URL") or config.get_main_option("sqlalchemy.url")
+    return url.replace("postgresql+asyncpg://", "postgresql+psycopg2://") if url else url
 
 
 def run_migrations_offline() -> None:
